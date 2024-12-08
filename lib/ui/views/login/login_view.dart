@@ -378,7 +378,7 @@ class LoginView extends StackedView<LoginViewModel> {
                     title: viewModel.isLogin ? "Sign In" : "Send OTP",
                     onTap: () {
                       if (viewModel.isLogin) {
-                        // controller.loginUser();
+                        viewModel.loginUser();
                       } else {
                         // viewModel.registerUser();
                         // Get.toNamed(RouteHelper.otpScreen);

@@ -3,6 +3,7 @@ import 'package:beba_driver/app/app.dialogs.dart';
 import 'package:beba_driver/app/app.locator.dart';
 import 'package:beba_driver/app/app.router.dart';
 import 'package:beba_driver/ui/common/app_colors.dart';
+import 'package:beba_driver/ui/common/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -78,6 +79,23 @@ class MainApp extends StatelessWidget {
         StackedService.routeObserver,
       ],
       builder: EasyLoading.init(),
+      theme: ThemeData(
+        scaffoldBackgroundColor: MyColor.scaffoldBg,
+        primaryColor: MyColor.primary,
+        primaryColorLight: MyColor.primary90,
+        colorScheme: ColorScheme.fromSeed(seedColor: MyColor.primary),
+        useMaterial3: true,
+        fontFamily: fontName,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(
+            color: MyColor.textColor,
+          ),
+          bodyMedium: TextStyle(
+            color: MyColor.textColor,
+          ),
+        ),
+      ),
     );
   }
 }
