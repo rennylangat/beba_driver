@@ -1,7 +1,8 @@
+import 'package:beba_driver/ui/common/size_config.dart';
+import 'package:beba_driver/ui/common/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:stacked/stacked.dart';
-import 'package:beba_driver/ui/common/ui_helpers.dart';
 
 import 'startup_viewmodel.dart';
 
@@ -14,13 +15,14 @@ class StartupView extends StackedView<StartupViewModel> {
     StartupViewModel viewModel,
     Widget? child,
   ) {
+    SizeConfig().init(context);
     return const Scaffold(
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'STACKED',
+              'Beba Driver',
               style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900),
             ),
             Row(
