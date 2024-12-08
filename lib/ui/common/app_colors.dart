@@ -22,7 +22,7 @@ class MyColor {
   static const Color neutral150 = Color(0xFF5C5B5B);
   static const Color neutral199 = Color(0xFFF2F1F1);
   static const Color neutral2 = Color(0xFF262626);
-  static const Color neutral250 = Color(0xFFA5A5A5);
+  static const Color neutral250 = Color(0xFFD9D9D9);
   static const Color neutral299 = Color(0xFFFAFAFA);
   //Stroke
   static const Color strokeColor = Color(0xFFD0D5DD);

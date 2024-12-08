@@ -20,7 +20,7 @@ class CustomButton extends StatelessWidget {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: isActivated == true ? MyColor.primary : MyColor.neutral250,
+          color: isActivated == true ? MyColor.primary40 : MyColor.neutral250,
           borderRadius: BorderRadius.circular(8),
         ),
         padding: const EdgeInsets.symmetric(
