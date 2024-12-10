@@ -7,6 +7,7 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:beba_driver/ui/views/intro/intro_view.dart';
 import 'package:beba_driver/ui/views/login/login_view.dart';
 import 'package:beba_driver/ui/views/order_details/order_details_view.dart';
+import 'package:beba_driver/ui/views/bids/bids_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -16,6 +17,7 @@ import 'package:beba_driver/ui/views/order_details/order_details_view.dart';
     MaterialRoute(page: IntroView),
     MaterialRoute(page: LoginView),
     MaterialRoute(page: OrderDetailsView),
+    MaterialRoute(page: BidsView),
 // @stacked-route
   ],
   dependencies: [
