@@ -78,17 +78,23 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
     switch (index) {
       case 0:
         if (!(widget.currentIndex == 0)) {
-          locator<NavigationService>().replaceWith(Routes.homeView);
+          locator<NavigationService>().replaceWith(
+            Routes.homeView,
+          );
         }
         break;
       case 1:
         if (!(widget.currentIndex == 1)) {
-          locator<NavigationService>().replaceWith(Routes.homeView);
+          locator<NavigationService>().replaceWith(
+            Routes.bidsView,
+          );
         }
         break;
       case 2:
         if (!(widget.currentIndex == 2)) {
-          locator<NavigationService>().replaceWith(Routes.homeView);
+          locator<NavigationService>().replaceWith(
+            Routes.profileView,
+          );
         }
         break;
     }
