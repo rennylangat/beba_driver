@@ -1,5 +1,5 @@
 import 'package:beba_driver/app/app.locator.dart';
-import 'package:beba_driver/app/app.router.dart';
+import 'package:beba_driver/services/auth_service.dart';
 import 'package:beba_driver/ui/common/app_colors.dart';
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +8,7 @@ import 'package:stacked_services/stacked_services.dart';
 
 class LoginViewModel extends BaseViewModel {
   final _navigatorService = locator<NavigationService>();
+  final _authService = locator<AuthService>();
   bool isLogin = true;
   final TextEditingController phoneController = TextEditingController(),
       nameController = TextEditingController(),
@@ -46,10 +47,13 @@ class LoginViewModel extends BaseViewModel {
     rebuildUi();
   }
 
-  loginUser() {
-    // if (loginFormKey.currentState!.validate()) {
-    // login user
-    _navigatorService.replaceWithHomeView();
-    // }
+  loginUser() async {
+    if (loginFormKey.currentState!.validate()) {
+      await _authService.loginUser(
+        phone: phoneController.text,
+        password: passwordController.text,
+        deviceId: "",
+      );
+    }
   }
 }

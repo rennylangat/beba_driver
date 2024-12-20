@@ -9,6 +9,10 @@ import 'package:beba_driver/ui/views/profile/profile_view.dart';
 import 'package:beba_driver/ui/views/startup/startup_view.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:beba_driver/ui/views/bottom_nav/bottom_nav_view.dart';
+import 'package:beba_driver/ui/views/basic_info/basic_info_view.dart';
+import 'package:beba_driver/services/api_client_service.dart';
+import 'package:beba_driver/services/auth_service.dart';
 // @stacked-import
 
 @StackedApp(
@@ -20,13 +24,17 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: OrderDetailsView),
     MaterialRoute(page: BidsView),
     MaterialRoute(page: ProfileView),
+    MaterialRoute(page: BottomNavView),
+    MaterialRoute(page: BasicInfoView),
 // @stacked-route
   ],
   dependencies: [
     LazySingleton(classType: BottomSheetService),
     LazySingleton(classType: DialogService),
     LazySingleton(classType: NavigationService),
-    // @stacked-service
+    LazySingleton(classType: ApiClientService),
+    LazySingleton(classType: AuthService),
+// @stacked-service
   ],
   bottomsheets: [
     StackedBottomsheet(classType: NoticeSheet),

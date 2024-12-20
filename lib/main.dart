@@ -3,6 +3,7 @@ import 'package:beba_driver/app/app.dialogs.dart';
 import 'package:beba_driver/app/app.locator.dart';
 import 'package:beba_driver/app/app.router.dart';
 import 'package:beba_driver/ui/common/app_colors.dart';
+import 'package:beba_driver/ui/common/globals.dart';
 import 'package:beba_driver/ui/common/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -78,6 +79,7 @@ class MainApp extends StatelessWidget {
       navigatorObservers: [
         StackedService.routeObserver,
       ],
+      scaffoldMessengerKey: snackBarKey,
       builder: EasyLoading.init(),
       theme: ThemeData(
         scaffoldBackgroundColor: MyColor.scaffoldBg,
