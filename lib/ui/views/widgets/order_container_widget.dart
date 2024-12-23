@@ -25,7 +25,7 @@ class OrderContainerWidget extends StatelessWidget {
         color: MyColor.colorWhite,
         boxShadow: [
           BoxShadow(
-            color: MyColor.colorBlack.withOpacity(0.05),
+            color: MyColor.colorBlack.withValues(alpha: 0.05),
             spreadRadius: 0,
             blurRadius: 8,
             offset: const Offset(0, 4),

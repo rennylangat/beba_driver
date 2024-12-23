@@ -5,6 +5,8 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:beba_driver/services/api_client_service.dart';
 import 'package:beba_driver/services/auth_service.dart';
 import 'package:beba_driver/services/device_info_service.dart';
+import 'package:beba_driver/services/home_service.dart';
+import 'package:beba_driver/services/trips_service.dart';
 // @stacked-import
 
 import 'test_helpers.mocks.dart';
@@ -16,6 +18,8 @@ import 'test_helpers.mocks.dart';
   MockSpec<ApiClientService>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<AuthService>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<DeviceInfoService>(onMissingStub: OnMissingStub.returnDefault),
+  MockSpec<HomeService>(onMissingStub: OnMissingStub.returnDefault),
+  MockSpec<TripsService>(onMissingStub: OnMissingStub.returnDefault),
 // @stacked-mock-spec
 ])
 void registerServices() {
@@ -25,6 +29,8 @@ void registerServices() {
   getAndRegisterApiClientService();
   getAndRegisterAuthService();
   getAndRegisterDeviceInfoService();
+  getAndRegisterHomeService();
+  getAndRegisterTripsService();
 // @stacked-mock-register
 }
 
@@ -96,6 +102,20 @@ MockDeviceInfoService getAndRegisterDeviceInfoService() {
   _removeRegistrationIfExists<DeviceInfoService>();
   final service = MockDeviceInfoService();
   locator.registerSingleton<DeviceInfoService>(service);
+  return service;
+}
+
+MockHomeService getAndRegisterHomeService() {
+  _removeRegistrationIfExists<HomeService>();
+  final service = MockHomeService();
+  locator.registerSingleton<HomeService>(service);
+  return service;
+}
+
+MockTripsService getAndRegisterTripsService() {
+  _removeRegistrationIfExists<TripsService>();
+  final service = MockTripsService();
+  locator.registerSingleton<TripsService>(service);
   return service;
 }
 // @stacked-mock-create

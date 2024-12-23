@@ -14,6 +14,8 @@ import 'package:stacked_shared/stacked_shared.dart';
 import '../services/api_client_service.dart';
 import '../services/auth_service.dart';
 import '../services/device_info_service.dart';
+import '../services/home_service.dart';
+import '../services/trips_service.dart';
 
 final locator = StackedLocator.instance;
 
@@ -32,4 +34,6 @@ Future<void> setupLocator({
   locator.registerLazySingleton(() => ApiClientService());
   locator.registerLazySingleton(() => AuthService());
   locator.registerLazySingleton(() => DeviceInfoService());
+  locator.registerLazySingleton(() => HomeService());
+  locator.registerLazySingleton(() => TripsService());
 }

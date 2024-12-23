@@ -9,6 +9,8 @@ import 'dart:ui' as _i8;
 import 'package:beba_driver/services/api_client_service.dart' as _i9;
 import 'package:beba_driver/services/auth_service.dart' as _i10;
 import 'package:beba_driver/services/device_info_service.dart' as _i11;
+import 'package:beba_driver/services/home_service.dart' as _i12;
+import 'package:beba_driver/services/trips_service.dart' as _i13;
 import 'package:dio/dio.dart' as _i2;
 import 'package:flutter/material.dart' as _i6;
 import 'package:get_secure_storage/get_secure_storage.dart' as _i3;
@@ -1041,3 +1043,41 @@ class MockDeviceInfoService extends _i1.Mock implements _i11.DeviceInfoService {
             _i7.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
       ) as _i7.Future<Map<String, dynamic>>);
 }
+
+/// A class which mocks [HomeService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockHomeService extends _i1.Mock implements _i12.HomeService {
+  @override
+  _i7.Future<_i2.Response<dynamic>> getUserDetails({required String? userId}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getUserDetails,
+          [],
+          {#userId: userId},
+        ),
+        returnValue:
+            _i7.Future<_i2.Response<dynamic>>.value(_FakeResponse_2<dynamic>(
+          this,
+          Invocation.method(
+            #getUserDetails,
+            [],
+            {#userId: userId},
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.Response<dynamic>>.value(_FakeResponse_2<dynamic>(
+          this,
+          Invocation.method(
+            #getUserDetails,
+            [],
+            {#userId: userId},
+          ),
+        )),
+      ) as _i7.Future<_i2.Response<dynamic>>);
+}
+
+/// A class which mocks [TripsService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockTripsService extends _i1.Mock implements _i13.TripsService {}

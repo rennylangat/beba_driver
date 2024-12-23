@@ -15,6 +15,8 @@ import 'package:beba_driver/services/api_client_service.dart';
 import 'package:beba_driver/services/auth_service.dart';
 import 'package:beba_driver/services/device_info_service.dart';
 import 'package:beba_driver/ui/views/otp/otp_view.dart';
+import 'package:beba_driver/services/home_service.dart';
+import 'package:beba_driver/services/trips_service.dart';
 // @stacked-import
 
 @StackedApp(
@@ -38,6 +40,8 @@ import 'package:beba_driver/ui/views/otp/otp_view.dart';
     LazySingleton(classType: ApiClientService),
     LazySingleton(classType: AuthService),
     LazySingleton(classType: DeviceInfoService),
+    LazySingleton(classType: HomeService),
+    LazySingleton(classType: TripsService),
 // @stacked-service
   ],
   bottomsheets: [

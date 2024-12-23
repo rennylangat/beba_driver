@@ -1,36 +1,48 @@
-import 'package:beba_driver/app/app.bottomsheets.dart';
-import 'package:beba_driver/app/app.dialogs.dart';
 import 'package:beba_driver/app/app.locator.dart';
-import 'package:beba_driver/ui/common/app_strings.dart';
+import 'package:beba_driver/services/home_service.dart';
+import 'package:beba_driver/services/trips_service.dart';
+import 'package:beba_driver/ui/views/home/models/delivery_model.dart';
+import 'package:beba_driver/ui/views/home/models/user_model.dart';
+import 'package:get_secure_storage/get_secure_storage.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_services/stacked_services.dart';
 
 class HomeViewModel extends BaseViewModel {
-  final _dialogService = locator<DialogService>();
-  final _bottomSheetService = locator<BottomSheetService>();
+  final _homeService = locator<HomeService>();
+  final _tripService = locator<TripsService>();
 
-  String get counterLabel => 'Counter is: $_counter';
-
-  int _counter = 0;
-
-  void incrementCounter() {
-    _counter++;
-    rebuildUi();
+  bool _isBusy = false;
+  @override
+  bool get isBusy => _isBusy;
+  UserDetails? _userDetails;
+  UserDetails? get userDetails => _userDetails;
+  MyDeliveries? _myDeliveries;
+  MyDeliveries? get myDeliveries => _myDeliveries;
+  final box = GetSecureStorage();
+  String userId = "";
+  Future<void> initialise() async {
+    _isBusy = true;
+    userId = box.read("userId") ?? "";
+    notifyListeners();
+    await getAvailableTrips();
+    await getUserDetails();
   }
 
-  void showDialog() {
-    _dialogService.showCustomDialog(
-      variant: DialogType.infoAlert,
-      title: 'Stacked Rocks!',
-      description: 'Give stacked $_counter stars on Github',
-    );
+  getAvailableTrips() async {
+    final res = await _tripService.getAvailableTrips();
+    if (res.statusCode == 200) {
+      _myDeliveries = MyDeliveries.fromJson(res.data);
+    }
+    _isBusy = false;
+    notifyListeners();
   }
 
-  void showBottomSheet() {
-    _bottomSheetService.showCustomSheet(
-      variant: BottomSheetType.notice,
-      title: ksHomeBottomSheetTitle,
-      description: ksHomeBottomSheetDescription,
-    );
+  getUserDetails() async {
+    _isBusy = true;
+    notifyListeners();
+    final res = await _homeService.getUserDetails(userId: userId);
+    if (res.statusCode == 200) {
+      _userDetails = UserDetails.fromJson(res.data);
+      await getAvailableTrips();
+    }
   }
 }

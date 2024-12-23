@@ -172,33 +172,6 @@ class StackedRouter extends _i1.RouterBase {
   Map<Type, _i1.StackedRouteFactory> get pagesMap => _pagesMap;
 }
 
-class BottomNavViewArguments {
-  const BottomNavViewArguments({
-    this.key,
-    required this.currentIndex,
-  });
-
-  final _i12.Key? key;
-
-  final int currentIndex;
-
-  @override
-  String toString() {
-    return '{"key": "$key", "currentIndex": "$currentIndex"}';
-  }
-
-  @override
-  bool operator ==(covariant BottomNavViewArguments other) {
-    if (identical(this, other)) return true;
-    return other.key == key && other.currentIndex == currentIndex;
-  }
-
-  @override
-  int get hashCode {
-    return key.hashCode ^ currentIndex.hashCode;
-  }
-}
-
 class OtpViewArguments {
   const OtpViewArguments({
     required this.phoneNumber,
@@ -330,17 +303,14 @@ extension NavigatorStateExtension on _i13.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToBottomNavView({
-    _i12.Key? key,
-    required int currentIndex,
+  Future<dynamic> navigateToBottomNavView([
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  }) async {
+  ]) async {
     return navigateTo<dynamic>(Routes.bottomNavView,
-        arguments: BottomNavViewArguments(key: key, currentIndex: currentIndex),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -478,14 +448,13 @@ extension NavigatorStateExtension on _i13.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithBottomNavView({
-    _i12.Key? key,
+  Future<dynamic> replaceWithBottomNavView([
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  }) async {
+  ]) async {
     return replaceWith<dynamic>(Routes.bottomNavView,
         id: routerId,
         preventDuplicates: preventDuplicates,
