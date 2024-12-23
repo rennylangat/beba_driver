@@ -4,6 +4,7 @@ import 'package:beba_driver/app/app.locator.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:beba_driver/services/api_client_service.dart';
 import 'package:beba_driver/services/auth_service.dart';
+import 'package:beba_driver/services/device_info_service.dart';
 // @stacked-import
 
 import 'test_helpers.mocks.dart';
@@ -14,6 +15,7 @@ import 'test_helpers.mocks.dart';
   MockSpec<DialogService>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<ApiClientService>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<AuthService>(onMissingStub: OnMissingStub.returnDefault),
+  MockSpec<DeviceInfoService>(onMissingStub: OnMissingStub.returnDefault),
 // @stacked-mock-spec
 ])
 void registerServices() {
@@ -22,6 +24,7 @@ void registerServices() {
   getAndRegisterDialogService();
   getAndRegisterApiClientService();
   getAndRegisterAuthService();
+  getAndRegisterDeviceInfoService();
 // @stacked-mock-register
 }
 
@@ -86,6 +89,13 @@ MockAuthService getAndRegisterAuthService() {
   _removeRegistrationIfExists<AuthService>();
   final service = MockAuthService();
   locator.registerSingleton<AuthService>(service);
+  return service;
+}
+
+MockDeviceInfoService getAndRegisterDeviceInfoService() {
+  _removeRegistrationIfExists<DeviceInfoService>();
+  final service = MockDeviceInfoService();
+  locator.registerSingleton<DeviceInfoService>(service);
   return service;
 }
 // @stacked-mock-create

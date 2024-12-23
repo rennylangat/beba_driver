@@ -4,8 +4,6 @@ import 'package:beba_driver/ui/common/app_colors.dart';
 import 'package:beba_driver/ui/common/size_config.dart';
 import 'package:beba_driver/ui/common/text_styles.dart';
 import 'package:beba_driver/ui/common/ui_helpers.dart';
-import 'package:beba_driver/ui/views/widgets/custom_bottom_nav.dart';
-import 'package:beba_driver/ui/views/widgets/custom_fab.dart';
 import 'package:beba_driver/ui/views/widgets/order_container_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
@@ -109,11 +107,6 @@ class HomeView extends StackedView<HomeViewModel> {
           horizontalSpaceSmall,
         ],
       ),
-      bottomNavigationBar: const CustomBottomNav(
-        currentIndex: 0,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: const CustomFAB(),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

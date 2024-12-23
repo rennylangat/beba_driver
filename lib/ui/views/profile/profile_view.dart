@@ -1,8 +1,6 @@
 import 'package:beba_driver/ui/common/app_colors.dart';
 import 'package:beba_driver/ui/common/size_config.dart';
 import 'package:beba_driver/ui/common/text_styles.dart';
-import 'package:beba_driver/ui/views/widgets/custom_bottom_nav.dart';
-import 'package:beba_driver/ui/views/widgets/custom_fab.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:stacked/stacked.dart';
@@ -19,11 +17,6 @@ class ProfileView extends StackedView<ProfileViewModel> {
     Widget? child,
   ) {
     return Scaffold(
-      bottomNavigationBar: const CustomBottomNav(
-        currentIndex: 2,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: const CustomFAB(),
       appBar: AppBar(
         backgroundColor: MyColor.primary40,
         title: Text(

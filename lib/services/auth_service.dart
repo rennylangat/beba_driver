@@ -11,27 +11,59 @@ class AuthService {
     required String phone,
     required String password,
     required String deviceId,
+    required String deviceMeta,
   }) async {
     return await _apiClientService.request(
       method: Methods.post,
       url: ApiConstants.login,
       body: {
-        'phone': phone,
+        'phone_number': phone,
         'password': password,
         "device_id": deviceId,
-        "device_meta": ""
+        "device_meta": deviceMeta,
       },
     );
   }
 
   Future<Response> createUser(
-      {required String phone, required String password}) async {
+      {required String phoneNumber,
+      required String firstName,
+      required String lastName,
+      required String password,
+      required int userRole}) async {
     return await _apiClientService.request(
       method: Methods.post,
       url: ApiConstants.register,
+      seeLogs: true,
       body: {
-        'phone': phone,
-        'password': password,
+        "phone_number": phoneNumber,
+        "first_name": firstName,
+        "last_name": lastName,
+        "password": password,
+        "user_role": userRole,
+      },
+    );
+  }
+
+  Future<Response> verifyOtp(
+      {required String otp, required String userId}) async {
+    return await _apiClientService.request(
+      method: Methods.post,
+      url: ApiConstants.verifyOtp,
+      body: {
+        "code": otp,
+        "user_id": userId,
+      },
+      seeLogs: true,
+    );
+  }
+
+  Future<Response> resendOtp({required String userId}) async {
+    return await _apiClientService.request(
+      method: Methods.post,
+      url: ApiConstants.resendOtp,
+      body: {
+        "user_id": userId,
       },
     );
   }

@@ -8,6 +8,7 @@ import 'dart:ui' as _i8;
 
 import 'package:beba_driver/services/api_client_service.dart' as _i9;
 import 'package:beba_driver/services/auth_service.dart' as _i10;
+import 'package:beba_driver/services/device_info_service.dart' as _i11;
 import 'package:dio/dio.dart' as _i2;
 import 'package:flutter/material.dart' as _i6;
 import 'package:get_secure_storage/get_secure_storage.dart' as _i3;
@@ -808,4 +809,235 @@ class MockApiClientService extends _i1.Mock implements _i9.ApiClientService {
 /// A class which mocks [AuthService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAuthService extends _i1.Mock implements _i10.AuthService {}
+class MockAuthService extends _i1.Mock implements _i10.AuthService {
+  @override
+  _i7.Future<_i2.Response<dynamic>> loginUser({
+    required String? phone,
+    required String? password,
+    required String? deviceId,
+    required String? deviceMeta,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #loginUser,
+          [],
+          {
+            #phone: phone,
+            #password: password,
+            #deviceId: deviceId,
+            #deviceMeta: deviceMeta,
+          },
+        ),
+        returnValue:
+            _i7.Future<_i2.Response<dynamic>>.value(_FakeResponse_2<dynamic>(
+          this,
+          Invocation.method(
+            #loginUser,
+            [],
+            {
+              #phone: phone,
+              #password: password,
+              #deviceId: deviceId,
+              #deviceMeta: deviceMeta,
+            },
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.Response<dynamic>>.value(_FakeResponse_2<dynamic>(
+          this,
+          Invocation.method(
+            #loginUser,
+            [],
+            {
+              #phone: phone,
+              #password: password,
+              #deviceId: deviceId,
+              #deviceMeta: deviceMeta,
+            },
+          ),
+        )),
+      ) as _i7.Future<_i2.Response<dynamic>>);
+
+  @override
+  _i7.Future<_i2.Response<dynamic>> createUser({
+    required String? phoneNumber,
+    required String? firstName,
+    required String? lastName,
+    required String? password,
+    required int? userRole,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #createUser,
+          [],
+          {
+            #phoneNumber: phoneNumber,
+            #firstName: firstName,
+            #lastName: lastName,
+            #password: password,
+            #userRole: userRole,
+          },
+        ),
+        returnValue:
+            _i7.Future<_i2.Response<dynamic>>.value(_FakeResponse_2<dynamic>(
+          this,
+          Invocation.method(
+            #createUser,
+            [],
+            {
+              #phoneNumber: phoneNumber,
+              #firstName: firstName,
+              #lastName: lastName,
+              #password: password,
+              #userRole: userRole,
+            },
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.Response<dynamic>>.value(_FakeResponse_2<dynamic>(
+          this,
+          Invocation.method(
+            #createUser,
+            [],
+            {
+              #phoneNumber: phoneNumber,
+              #firstName: firstName,
+              #lastName: lastName,
+              #password: password,
+              #userRole: userRole,
+            },
+          ),
+        )),
+      ) as _i7.Future<_i2.Response<dynamic>>);
+
+  @override
+  _i7.Future<_i2.Response<dynamic>> verifyOtp({
+    required String? otp,
+    required String? userId,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #verifyOtp,
+          [],
+          {
+            #otp: otp,
+            #userId: userId,
+          },
+        ),
+        returnValue:
+            _i7.Future<_i2.Response<dynamic>>.value(_FakeResponse_2<dynamic>(
+          this,
+          Invocation.method(
+            #verifyOtp,
+            [],
+            {
+              #otp: otp,
+              #userId: userId,
+            },
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.Response<dynamic>>.value(_FakeResponse_2<dynamic>(
+          this,
+          Invocation.method(
+            #verifyOtp,
+            [],
+            {
+              #otp: otp,
+              #userId: userId,
+            },
+          ),
+        )),
+      ) as _i7.Future<_i2.Response<dynamic>>);
+
+  @override
+  _i7.Future<_i2.Response<dynamic>> resendOtp({required String? userId}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #resendOtp,
+          [],
+          {#userId: userId},
+        ),
+        returnValue:
+            _i7.Future<_i2.Response<dynamic>>.value(_FakeResponse_2<dynamic>(
+          this,
+          Invocation.method(
+            #resendOtp,
+            [],
+            {#userId: userId},
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.Response<dynamic>>.value(_FakeResponse_2<dynamic>(
+          this,
+          Invocation.method(
+            #resendOtp,
+            [],
+            {#userId: userId},
+          ),
+        )),
+      ) as _i7.Future<_i2.Response<dynamic>>);
+}
+
+/// A class which mocks [DeviceInfoService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDeviceInfoService extends _i1.Mock implements _i11.DeviceInfoService {
+  @override
+  _i7.Future<String> getDeviceId() => (super.noSuchMethod(
+        Invocation.method(
+          #getDeviceId,
+          [],
+        ),
+        returnValue: _i7.Future<String>.value(_i5.dummyValue<String>(
+          this,
+          Invocation.method(
+            #getDeviceId,
+            [],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<String>.value(_i5.dummyValue<String>(
+          this,
+          Invocation.method(
+            #getDeviceId,
+            [],
+          ),
+        )),
+      ) as _i7.Future<String>);
+
+  @override
+  _i7.Future<String> getSimpleDeviceId() => (super.noSuchMethod(
+        Invocation.method(
+          #getSimpleDeviceId,
+          [],
+        ),
+        returnValue: _i7.Future<String>.value(_i5.dummyValue<String>(
+          this,
+          Invocation.method(
+            #getSimpleDeviceId,
+            [],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<String>.value(_i5.dummyValue<String>(
+          this,
+          Invocation.method(
+            #getSimpleDeviceId,
+            [],
+          ),
+        )),
+      ) as _i7.Future<String>);
+
+  @override
+  _i7.Future<Map<String, dynamic>> getDeviceInfo() => (super.noSuchMethod(
+        Invocation.method(
+          #getDeviceInfo,
+          [],
+        ),
+        returnValue:
+            _i7.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
+        returnValueForMissingStub:
+            _i7.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
+      ) as _i7.Future<Map<String, dynamic>>);
+}

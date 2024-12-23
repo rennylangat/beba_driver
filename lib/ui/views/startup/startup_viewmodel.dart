@@ -16,7 +16,7 @@ class StartupViewModel extends BaseViewModel {
 
   checkLogin() async {
     if (box.read("token") != null) {
-      _navigationService.replaceWithHomeView();
+      _navigationService.replaceWithBottomNavView();
     } else if (box.read("firstTime") == null || box.read("firstTime") == true) {
       _navigationService.replaceWithIntroView();
     } else {

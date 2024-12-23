@@ -2,8 +2,6 @@ import 'package:beba_driver/ui/common/app_colors.dart';
 import 'package:beba_driver/ui/common/size_config.dart';
 import 'package:beba_driver/ui/common/text_styles.dart';
 import 'package:beba_driver/ui/views/bids/widgets/bid_child.dart';
-import 'package:beba_driver/ui/views/widgets/custom_bottom_nav.dart';
-import 'package:beba_driver/ui/views/widgets/custom_fab.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -63,9 +61,6 @@ class _AvailableTripsState extends State<AvailableTrips>
     return DefaultTabController(
       length: 4,
       child: Scaffold(
-        bottomNavigationBar: const CustomBottomNav(currentIndex: 1),
-        floatingActionButton: const CustomFAB(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         appBar: AppBar(
           backgroundColor: MyColor.primary40,
           title: Text(

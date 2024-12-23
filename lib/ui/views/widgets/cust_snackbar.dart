@@ -5,13 +5,14 @@ class CustSnackbar {
   static void showSnackBar(
     String? title,
     String message, {
-    Color backgroundColor = Colors.transparent,
-    Color colorText = Colors.black,
+    bool isError = false,
+    Color backgroundColor = Colors.green,
+    Color colorText = Colors.white,
     SnackStyle snackStyle = SnackStyle.FLOATING,
     SnackPos snackPosition = SnackPos.BOTTOM,
   }) {
     final snackBar = SnackBar(
-      backgroundColor: backgroundColor,
+      backgroundColor: isError ? Colors.red : backgroundColor,
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
