@@ -119,140 +119,8 @@ class LoginView extends StackedView<LoginViewModel> {
                                 SizedBox(
                                   height: getProportionateScreenHeight(3),
                                 ),
-                                // CustomTextField(
-                                //   hintText: "+254",
-                                //   controller: controller.phoneController,
-                                //   prefixWidget: GestureDetector(
-                                //     onTap: () async {
-                                //       await controller.pickCountry(
-                                //           context: context);
-                                //     },
-                                //     child: Container(
-                                //       width: 50,
-                                //       height: 40,
-                                //       padding: const EdgeInsets.symmetric(
-                                //           horizontal: 8.0, vertical: 14.0),
-                                //       margin: const EdgeInsets.symmetric(
-                                //           horizontal: 8.0),
-                                //       decoration: BoxDecoration(
-                                //         // color: MyColor.bgColor1,
-                                //         borderRadius:
-                                //             BorderRadius.circular(5.0),
-                                //       ),
-                                //       child: Text(
-                                //         "${controller.countryCode?.code == null ? "🇰🇪" : controller.countryCode?.code.toUpperCase().replaceAllMapped(RegExp(r'[A-Z]'), (match) => String.fromCharCode(match.group(0)!.codeUnitAt(0) + 127397))} ${controller.countryCode?.dialCode ?? "+254"}",
-                                //       ),
-                                //     ),
-                                //   ),
-                                //   autofillHints: const [
-                                //     AutofillHints.telephoneNumber
-                                //   ],
-                                //   validator: (value) {
-                                //     if (value!.isEmpty) {
-                                //       return "Phone number is required";
-                                //     }
-
-                                //     return null;
-                                //   },
-                                // ),
-                                TextFormField(
-                                  controller: viewModel.phoneController,
-
-                                  maxLines: 1,
-                                  // maxLength: 9,
-                                  validator: (String? value) {
-                                    if (value != null && value.isEmpty) {
-                                      return "Phone number is required";
-                                    } else {
-                                      return null;
-                                    }
-                                  },
-                                  autofillHints: const [
-                                    AutofillHints.telephoneNumber
-                                  ],
-                                  keyboardType: TextInputType.phone,
-                                  textInputAction: TextInputAction.next,
-                                  onChanged: (value) {
-                                    if (value.length > 2) {
-                                      if (value.substring(0, 1) == "0") {
-                                        viewModel.phoneController.text =
-                                            value.substring(1);
-                                        viewModel.rebuildUi();
-                                      }
-                                    }
-                                    return;
-                                  },
-                                  cursorColor: Theme.of(context).primaryColor,
-                                  maxLength: 9,
-                                  decoration: InputDecoration(
-                                    hintText: "Phone number",
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 14, horizontal: 22),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                          color: MyColor.borderColor,
-                                          width: 0.5),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                          color: MyColor.borderColor,
-                                          width: 0.5),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                          color: MyColor.borderColor,
-                                          width: 0.5),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                          color: Colors.red, width: 0.5),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                          color: MyColor.primary, width: 0.5),
-                                    ),
-                                    disabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                          color: MyColor.borderColor,
-                                          width: 0.5),
-                                    ),
-                                    isDense: true,
-                                    // fillColor: MyColor.bgColor1,
-                                    hintStyle: robotoRegular.copyWith(
-                                        fontSize: 14, color: MyColor.hintText),
-                                    filled: true,
-                                    fillColor: MyColor.textBoxFillColor,
-                                    prefixIcon: GestureDetector(
-                                      onTap: () async {
-                                        await viewModel.pickCountry(
-                                            context: context);
-                                      },
-                                      child: Container(
-                                        // width: 20,
-                                        // height: 40,
-
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0, vertical: 14.0),
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 8.0),
-                                        decoration: BoxDecoration(
-                                          // color: MyColor.bgColor1,
-                                          borderRadius:
-                                              BorderRadius.circular(5.0),
-                                        ),
-
-                                        child: Text(
-                                          "${viewModel.countryCode?.code == null ? "🇰🇪" : viewModel.countryCode?.code.toUpperCase().replaceAllMapped(RegExp(r'[A-Z]'), (match) => String.fromCharCode(match.group(0)!.codeUnitAt(0) + 127397))} ${viewModel.countryCode?.dialCode ?? "+254"}",
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                PhoneNumberField(
+                                  viewModel: viewModel,
                                 ),
                                 SizedBox(
                                   height: getProportionateScreenHeight(15),
@@ -287,19 +155,7 @@ class LoginView extends StackedView<LoginViewModel> {
                               SizedBox(
                                 height: getProportionateScreenHeight(3),
                               ),
-                              CustomTextField(
-                                hintText: "+254",
-                                controller: viewModel.phoneController,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "Phone number is required";
-                                  }
-                                  if (value.length < 10) {
-                                    return "Phone number is invalid";
-                                  }
-                                  return null;
-                                },
-                              ),
+                              PhoneNumberField(viewModel: viewModel),
                               SizedBox(
                                 height: getProportionateScreenHeight(15),
                               ),
@@ -380,8 +236,7 @@ class LoginView extends StackedView<LoginViewModel> {
                       if (viewModel.isLogin) {
                         viewModel.loginUser();
                       } else {
-                        // viewModel.registerUser();
-                        // Get.toNamed(RouteHelper.otpScreen);
+                        viewModel.createUser();
                       }
                     },
                   ),
@@ -418,5 +273,101 @@ class LoginView extends StackedView<LoginViewModel> {
   void onViewModelReady(LoginViewModel viewModel) {
     super.onViewModelReady(viewModel);
     viewModel.initialize();
+  }
+}
+
+class PhoneNumberField extends StatelessWidget {
+  final LoginViewModel viewModel;
+  const PhoneNumberField({
+    super.key,
+    required this.viewModel,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: viewModel.phoneController,
+      maxLines: 1,
+      // maxLength: 9,
+      validator: (String? value) {
+        if (value != null && value.isEmpty) {
+          return "Phone number is required";
+        } else {
+          return null;
+        }
+      },
+      autofillHints: const [AutofillHints.telephoneNumber],
+      keyboardType: TextInputType.phone,
+      textInputAction: TextInputAction.next,
+      onChanged: (value) {
+        if (value.length > 2) {
+          if (value.substring(0, 1) == "0") {
+            viewModel.phoneController.text = value.substring(1);
+            viewModel.rebuildUi();
+          }
+        }
+        return;
+      },
+      cursorColor: Theme.of(context).primaryColor,
+      maxLength: 9,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      decoration: InputDecoration(
+        hintText: "Phone number",
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: MyColor.borderColor, width: 0.5),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: MyColor.borderColor, width: 0.5),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: MyColor.borderColor, width: 0.5),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: Colors.red, width: 0.5),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: MyColor.primary, width: 0.5),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: MyColor.borderColor, width: 0.5),
+        ),
+        isDense: true,
+        // fillColor: MyColor.bgColor1,
+
+        hintStyle:
+            robotoRegular.copyWith(fontSize: 14, color: MyColor.hintText),
+        filled: true,
+        fillColor: MyColor.textBoxFillColor,
+        prefixIcon: GestureDetector(
+          onTap: () async {
+            await viewModel.pickCountry(context: context);
+          },
+          child: Container(
+            // width: 20,
+            // height: 40,
+
+            padding:
+                const EdgeInsets.symmetric(horizontal: 8.0, vertical: 14.0),
+            margin: const EdgeInsets.symmetric(horizontal: 8.0),
+            decoration: BoxDecoration(
+              // color: MyColor.bgColor1,
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+
+            child: Text(
+              "${viewModel.countryCode?.code == null ? "🇰🇪" : viewModel.countryCode?.code.toUpperCase().replaceAllMapped(RegExp(r'[A-Z]'), (match) => String.fromCharCode(match.group(0)!.codeUnitAt(0) + 127397))} ${viewModel.countryCode?.dialCode ?? "+254"}",
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

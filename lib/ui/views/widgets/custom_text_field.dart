@@ -41,6 +41,7 @@ class CustomTextField extends StatefulWidget {
   final bool autoFocus;
   final Color prefixIconColor;
   final List<String>? autofillHints;
+  final TextAlign textAlign;
 
   const CustomTextField({
     super.key,
@@ -81,6 +82,7 @@ class CustomTextField extends StatefulWidget {
     this.prefixIconColor = MyColor.primary,
     this.autofillHints,
     this.prefixWidget,
+    this.textAlign = TextAlign.start,
   });
 
   @override
@@ -114,6 +116,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         onTapOutside: (event) {
           FocusManager.instance.primaryFocus?.unfocus();
         },
+        textAlign: widget.textAlign,
         autofillHints: widget.autofillHints,
         style: robotoRegular.copyWith(color: MyColor.textColor, fontSize: 14),
         inputFormatters: widget.inputType == TextInputType.phone

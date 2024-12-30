@@ -4,12 +4,12 @@ import 'package:beba_driver/ui/common/app_colors.dart';
 import 'package:beba_driver/ui/common/size_config.dart';
 import 'package:beba_driver/ui/common/text_styles.dart';
 import 'package:beba_driver/ui/common/ui_helpers.dart';
-import 'package:beba_driver/ui/views/widgets/custom_bottom_nav.dart';
-import 'package:beba_driver/ui/views/widgets/custom_fab.dart';
+import 'package:beba_driver/ui/views/widgets/order_container_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -39,53 +39,66 @@ class HomeView extends StackedView<HomeViewModel> {
           ),
         ),
         centerTitle: false,
-        title: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Gregory Amanyuka",
-              style: robotoBold.copyWith(
-                color: MyColor.colorWhite,
-                fontSize: getProportionateScreenHeight(18),
-              ),
-            ),
-            SizedBox(
-              height: getProportionateScreenHeight(5),
-            ),
-            Wrap(
-              spacing: 10,
-              alignment: WrapAlignment.start,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: MyColor.neutral199,
+        title: viewModel.isBusy
+            ? Shimmer.fromColors(
+                baseColor: MyColor.primary40,
+                highlightColor: MyColor.primary90,
+                child: Container(
+                  width: getProportionateScreenWidth(500),
+                  height: getProportionateScreenHeight(50),
+                  decoration: const BoxDecoration(
+                    color: MyColor.colorWhite,
                   ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
-                  child: Text(
-                    "25 Trips",
-                    style: robotoLight.copyWith(
-                      color: MyColor.neutral150,
-                      fontSize: getProportionateScreenHeight(9),
+                ),
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "${viewModel.userDetails!.user.firstName} ${viewModel.userDetails!.user.lastName}",
+                    style: robotoBold.copyWith(
+                      color: MyColor.colorWhite,
+                      fontSize: getProportionateScreenHeight(18),
                     ),
                   ),
-                ),
-                const RatingStars(
-                  valueLabelVisibility: false,
-                  starSize: 12,
-                  value: 4.5,
-                  starSpacing: 2,
-                  starColor: MyColor.secondary,
-                ),
-              ],
-            )
-          ],
-        ),
+                  SizedBox(
+                    height: getProportionateScreenHeight(5),
+                  ),
+                  Wrap(
+                    spacing: 10,
+                    alignment: WrapAlignment.start,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: MyColor.neutral199,
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        child: Text(
+                          "${viewModel.userDetails!.user.userRating.totalTrips} Trips",
+                          style: robotoLight.copyWith(
+                            color: MyColor.neutral150,
+                            fontSize: getProportionateScreenHeight(9),
+                          ),
+                        ),
+                      ),
+                      RatingStars(
+                        valueLabelVisibility: false,
+                        starSize: 12,
+                        value: viewModel
+                            .userDetails!.user.userRating.overallRating,
+                        starSpacing: 2,
+                        starColor: MyColor.secondary,
+                      ),
+                    ],
+                  )
+                ],
+              ),
         actions: [
           InkWell(
             onTap: () {},
@@ -108,41 +121,115 @@ class HomeView extends StackedView<HomeViewModel> {
           horizontalSpaceSmall,
         ],
       ),
-      bottomNavigationBar: const CustomBottomNav(
-        currentIndex: 0,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: const CustomFAB(),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Requests",
-                  style: robotoMedium.copyWith(
-                    fontSize: getProportionateScreenHeight(18),
+          child: RefreshIndicator(
+            onRefresh: () async {
+              await viewModel.initialise();
+            },
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Requests",
+                    style: robotoMedium.copyWith(
+                      fontSize: getProportionateScreenHeight(18),
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: getProportionateScreenHeight(10),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          locator<NavigationService>()
-                              .navigateTo(Routes.orderDetailsView);
-                        },
-                        child: const OrderContainerWidget(),
-                      );
-                    },
+                  SizedBox(
+                    height: getProportionateScreenHeight(10),
                   ),
-                )
-              ],
+                  Expanded(
+                    child: viewModel.isBusy
+                        ? ListView(
+                            children: List.generate(
+                              10,
+                              (index) => Shimmer.fromColors(
+                                baseColor: MyColor.shimmerBaseColor,
+                                highlightColor: MyColor.shimmerSplashColor,
+                                child: Container(
+                                  margin: const EdgeInsets.only(bottom: 16),
+                                  width: SizeConfig.screenWidth,
+                                  height: getProportionateScreenHeight(85),
+                                  decoration: BoxDecoration(
+                                    color: MyColor.colorWhite,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : viewModel.myDeliveries!.deliveries.isEmpty
+                            ? Center(
+                                child: InkWell(
+                                  onTap: () {},
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: MyColor.colorWhite,
+                                      borderRadius: BorderRadius.circular(10),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          blurRadius: 8,
+                                          color: Colors.black
+                                              .withValues(alpha: 0.05),
+                                          offset: const Offset(0, 4),
+                                        )
+                                      ],
+                                    ),
+                                    width: SizeConfig.screenWidth,
+                                    height: getProportionateScreenHeight(500),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/icons/no_request.svg",
+                                          height:
+                                              getProportionateScreenHeight(80),
+                                          fit: BoxFit.contain,
+                                        ),
+                                        SizedBox(
+                                          height:
+                                              getProportionateScreenHeight(25),
+                                        ),
+                                        Text(
+                                          "No Request Available",
+                                          style: robotoSemiBold.copyWith(
+                                            color: MyColor.primary40,
+                                            fontSize:
+                                                getProportionateScreenHeight(
+                                                    14),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : ListView.builder(
+                                itemCount:
+                                    viewModel.myDeliveries!.deliveries.length,
+                                itemBuilder: (context, index) {
+                                  var delivery =
+                                      viewModel.myDeliveries!.deliveries[index];
+                                  return InkWell(
+                                    onTap: () {
+                                      locator<NavigationService>().navigateTo(
+                                          Routes.orderDetailsView,
+                                          arguments: OrderDetailsViewArguments(
+                                              delivery: delivery));
+                                    },
+                                    child: OrderContainerWidget(
+                                        delivery: delivery),
+                                  );
+                                },
+                              ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -155,200 +242,10 @@ class HomeView extends StackedView<HomeViewModel> {
     BuildContext context,
   ) =>
       HomeViewModel();
-}
-
-class OrderContainerWidget extends StatelessWidget {
-  const OrderContainerWidget({
-    super.key,
-  });
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: MyColor.colorWhite,
-        boxShadow: [
-          BoxShadow(
-            color: MyColor.colorBlack.withOpacity(0.05),
-            spreadRadius: 0,
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          )
-        ],
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              const CircleAvatar(
-                radius: 20,
-                backgroundImage: AssetImage(
-                  "assets/images/user.png",
-                ),
-              ),
-              horizontalSpaceSmall,
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Gregory Amanyuka",
-                    style: robotoMedium.copyWith(
-                      color: MyColor.primary40,
-                      fontSize: getProportionateScreenHeight(12),
-                    ),
-                  ),
-                  verticalSpaceTiny,
-                  Wrap(
-                    spacing: 10,
-                    alignment: WrapAlignment.start,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: MyColor.neutral199,
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        child: Text(
-                          "12 Bids",
-                          style: robotoRegular.copyWith(
-                            color: MyColor.neutral150,
-                            fontSize: getProportionateScreenHeight(9),
-                          ),
-                        ),
-                      ),
-                      const RatingStars(
-                        valueLabelVisibility: false,
-                        starSize: 12,
-                        value: 4.5,
-                        starSpacing: 2,
-                        starColor: MyColor.secondary,
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              const Spacer(),
-              Text.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(
-                      text: "Kes ",
-                      style: robotoRegular.copyWith(
-                        color: MyColor.neutral150,
-                        fontSize: getProportionateScreenHeight(9),
-                      ),
-                    ),
-                    TextSpan(
-                      text: "2,500",
-                      style: robotoMedium.copyWith(
-                        color: MyColor.secondary,
-                        fontSize: getProportionateScreenHeight(18),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-          SizedBox(
-            height: getProportionateScreenHeight(2),
-          ),
-          const Divider(
-            color: MyColor.utilityOutline,
-            thickness: 1,
-          ),
-          verticalSpaceTiny,
-          Row(
-            children: [
-              SvgPicture.asset(
-                "assets/icons/pickup.svg",
-                height: getProportionateScreenHeight(20),
-              ),
-              horizontalSpaceSmall,
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Pickup",
-                      style: robotoRegular.copyWith(
-                        color: MyColor.neutral150,
-                        fontSize: getProportionateScreenHeight(9),
-                      ),
-                    ),
-                    Text(
-                      "Westlands, Nairobi",
-                      style: robotoMedium.copyWith(
-                          color: MyColor.primary40,
-                          fontSize: getProportionateScreenHeight(11)),
-                    ),
-                  ],
-                ),
-              ),
-              horizontalSpaceTiny,
-              const Expanded(
-                child: Divider(
-                  color: MyColor.utilityOutline,
-                  thickness: 1,
-                ),
-              ),
-              Column(
-                children: [
-                  Text(
-                    "6hrs",
-                    style: robotoBold.copyWith(
-                      color: MyColor.neutral150,
-                      fontSize: getProportionateScreenHeight(9),
-                    ),
-                  ),
-                  Text(
-                    "128Km",
-                    style: robotoRegular.copyWith(
-                      color: MyColor.neutral150,
-                      fontSize: getProportionateScreenHeight(9),
-                    ),
-                  ),
-                ],
-              ),
-              const Expanded(
-                child: Divider(
-                  color: MyColor.utilityOutline,
-                  thickness: 1,
-                ),
-              ),
-              SvgPicture.asset(
-                "assets/icons/destination.svg",
-              ),
-              horizontalSpaceTiny,
-              Expanded(
-                  child: Column(
-                children: [
-                  Text(
-                    "Destination",
-                    style: robotoRegular.copyWith(
-                      color: MyColor.neutral150,
-                      fontSize: getProportionateScreenHeight(9),
-                    ),
-                  ),
-                  Text(
-                    "Nairobi",
-                    style: robotoMedium.copyWith(
-                        color: MyColor.primary40,
-                        fontSize: getProportionateScreenHeight(11)),
-                  ),
-                ],
-              ))
-            ],
-          )
-        ],
-      ),
-    );
+  void onViewModelReady(HomeViewModel viewModel) {
+    viewModel.initialise();
+    super.onViewModelReady(viewModel);
   }
 }
