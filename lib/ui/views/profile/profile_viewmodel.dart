@@ -4,13 +4,17 @@ import 'package:beba_driver/app/app.locator.dart';
 import 'package:beba_driver/ui/common/app_colors.dart';
 import 'package:beba_driver/ui/common/size_config.dart';
 import 'package:beba_driver/ui/common/text_styles.dart';
+import 'package:beba_driver/ui/views/home/models/user_model.dart';
 import 'package:beba_driver/ui/views/login/login_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get_secure_storage/get_secure_storage.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class ProfileViewModel extends BaseViewModel {
+  final box = GetSecureStorage();
+  UserDetails? userDetails;
   List<Map<String, dynamic>> menuList = [
     {
       "title": "Basic Information",
@@ -35,6 +39,11 @@ class ProfileViewModel extends BaseViewModel {
       "route": "",
     },
   ];
+
+  void init() {
+    userDetails = UserDetails.fromJson(box.read("userDetails"));
+    notifyListeners();
+  }
 
   logout({required BuildContext context}) async {
     showDialog(

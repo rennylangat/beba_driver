@@ -85,7 +85,7 @@ class ProfileView extends StackedView<ProfileViewModel> {
                     height: getProportionateScreenHeight(10),
                   ),
                   Text(
-                    "John Doe",
+                    "${viewModel.userDetails!.user.firstName} ${viewModel.userDetails!.user.lastName}",
                     style: robotoRegular.copyWith(
                       fontSize: getProportionateScreenHeight(20),
                       color: MyColor.primary40,
@@ -95,7 +95,7 @@ class ProfileView extends StackedView<ProfileViewModel> {
                     height: getProportionateScreenHeight(5),
                   ),
                   Text(
-                    "+254 712 345 678",
+                    "+${viewModel.userDetails!.user.phoneNumber}",
                     style: robotoRegular.copyWith(
                       fontSize: getProportionateScreenHeight(15),
                       color: MyColor.primary40,
@@ -175,4 +175,10 @@ class ProfileView extends StackedView<ProfileViewModel> {
     BuildContext context,
   ) =>
       ProfileViewModel();
+
+  @override
+  void onViewModelReady(ProfileViewModel viewModel) {
+    viewModel.init();
+    super.onViewModelReady(viewModel);
+  }
 }

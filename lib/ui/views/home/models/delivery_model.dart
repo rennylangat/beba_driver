@@ -39,7 +39,6 @@ class SingleDelivery {
   final String id;
   final String deliveryCode;
   final String deliveryStatus;
-
   final dynamic acceptedBid;
   final RequiredVehicleType requiredVehicleType;
   final RequestingUser requestingUser;
@@ -49,18 +48,16 @@ class SingleDelivery {
   final DateTime updatedAt;
   final String pickupLocation;
   final String deliveryLocation;
-
   final String cargoDescription;
-
   final bool isActive;
   final String additionalRequirements;
   final dynamic latitude;
   final dynamic longitude;
   final DateTime lastUpdatedAt;
   final String deliveryNotes;
+  final String deliveryWeight;
   final String deliveryDuration;
   final String deliveryDistance;
-
   final List<dynamic> deliveryStatusHistory;
 
   SingleDelivery(
@@ -83,6 +80,7 @@ class SingleDelivery {
       required this.longitude,
       required this.lastUpdatedAt,
       required this.deliveryNotes,
+      required this.deliveryWeight,
       required this.deliveryDuration,
       required this.deliveryDistance,
       required this.deliveryStatusHistory});
@@ -108,6 +106,7 @@ class SingleDelivery {
         longitude: json["longitude"],
         lastUpdatedAt: DateTime.parse(json["last_updated_at"]),
         deliveryNotes: json["delivery_notes"],
+        deliveryWeight: json["approximate_weight_capacity_ton"],
         deliveryDuration: json["approximate_delivery_duration"],
         deliveryDistance: json["approximate_delivery_distance"],
         deliveryStatusHistory:
@@ -134,6 +133,7 @@ class SingleDelivery {
         "longitude": longitude,
         "last_updated_at": lastUpdatedAt.toIso8601String(),
         "delivery_notes": deliveryNotes,
+        "approximate_weight_capacity_ton": deliveryWeight,
         "delivery_duration": deliveryDuration,
         "delivery_distance": deliveryDistance,
         "delivery_status_history":

@@ -9,6 +9,7 @@ import 'package:beba_driver/ui/views/basic_info/basic_info_view.dart' as _i10;
 import 'package:beba_driver/ui/views/bids/bids_view.dart' as _i7;
 import 'package:beba_driver/ui/views/bottom_nav/bottom_nav_view.dart' as _i9;
 import 'package:beba_driver/ui/views/home/home_view.dart' as _i2;
+import 'package:beba_driver/ui/views/home/models/delivery_model.dart' as _i13;
 import 'package:beba_driver/ui/views/intro/intro_view.dart' as _i4;
 import 'package:beba_driver/ui/views/login/login_view.dart' as _i5;
 import 'package:beba_driver/ui/views/order_details/order_details_view.dart'
@@ -19,7 +20,7 @@ import 'package:beba_driver/ui/views/startup/startup_view.dart' as _i3;
 import 'package:flutter/material.dart' as _i12;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i13;
+import 'package:stacked_services/stacked_services.dart' as _i14;
 
 class Routes {
   static const homeView = '/home-view';
@@ -126,8 +127,10 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i6.OrderDetailsView: (data) {
+      final args = data.getArgs<OrderDetailsViewArguments>(nullOk: false);
       return _i12.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i6.OrderDetailsView(),
+        builder: (context) =>
+            _i6.OrderDetailsView(key: args.key, delivery: args.delivery),
         settings: data,
       );
     },
@@ -172,6 +175,33 @@ class StackedRouter extends _i1.RouterBase {
   Map<Type, _i1.StackedRouteFactory> get pagesMap => _pagesMap;
 }
 
+class OrderDetailsViewArguments {
+  const OrderDetailsViewArguments({
+    this.key,
+    required this.delivery,
+  });
+
+  final _i12.Key? key;
+
+  final _i13.SingleDelivery delivery;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "delivery": "$delivery"}';
+  }
+
+  @override
+  bool operator ==(covariant OrderDetailsViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key && other.delivery == delivery;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^ delivery.hashCode;
+  }
+}
+
 class OtpViewArguments {
   const OtpViewArguments({
     required this.phoneNumber,
@@ -204,7 +234,7 @@ class OtpViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i13.NavigationService {
+extension NavigatorStateExtension on _i14.NavigationService {
   Future<dynamic> navigateToHomeView([
     int? routerId,
     bool preventDuplicates = true,
@@ -261,14 +291,17 @@ extension NavigatorStateExtension on _i13.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToOrderDetailsView([
+  Future<dynamic> navigateToOrderDetailsView({
+    _i12.Key? key,
+    required _i13.SingleDelivery delivery,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return navigateTo<dynamic>(Routes.orderDetailsView,
+        arguments: OrderDetailsViewArguments(key: key, delivery: delivery),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -406,14 +439,17 @@ extension NavigatorStateExtension on _i13.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithOrderDetailsView([
+  Future<dynamic> replaceWithOrderDetailsView({
+    _i12.Key? key,
+    required _i13.SingleDelivery delivery,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return replaceWith<dynamic>(Routes.orderDetailsView,
+        arguments: OrderDetailsViewArguments(key: key, delivery: delivery),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

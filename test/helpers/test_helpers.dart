@@ -20,6 +20,7 @@ import 'test_helpers.mocks.dart';
   MockSpec<DeviceInfoService>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<HomeService>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<TripsService>(onMissingStub: OnMissingStub.returnDefault),
+  MockSpec<MoneyConverterService>(onMissingStub: OnMissingStub.returnDefault),
 // @stacked-mock-spec
 ])
 void registerServices() {
@@ -31,6 +32,7 @@ void registerServices() {
   getAndRegisterDeviceInfoService();
   getAndRegisterHomeService();
   getAndRegisterTripsService();
+  getAndRegisterMoneyConverterService();
 // @stacked-mock-register
 }
 
@@ -118,6 +120,8 @@ MockTripsService getAndRegisterTripsService() {
   locator.registerSingleton<TripsService>(service);
   return service;
 }
+
+
 // @stacked-mock-create
 
 void _removeRegistrationIfExists<T extends Object>() {

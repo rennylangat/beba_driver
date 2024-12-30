@@ -80,17 +80,18 @@ class HomeView extends StackedView<HomeViewModel> {
                           vertical: 4,
                         ),
                         child: Text(
-                          "0 Trips",
+                          "${viewModel.userDetails!.user.userRating.totalTrips} Trips",
                           style: robotoLight.copyWith(
                             color: MyColor.neutral150,
                             fontSize: getProportionateScreenHeight(9),
                           ),
                         ),
                       ),
-                      const RatingStars(
+                      RatingStars(
                         valueLabelVisibility: false,
                         starSize: 12,
-                        value: 5,
+                        value: viewModel
+                            .userDetails!.user.userRating.overallRating,
                         starSpacing: 2,
                         starColor: MyColor.secondary,
                       ),
@@ -212,12 +213,17 @@ class HomeView extends StackedView<HomeViewModel> {
                                 itemCount:
                                     viewModel.myDeliveries!.deliveries.length,
                                 itemBuilder: (context, index) {
+                                  var delivery =
+                                      viewModel.myDeliveries!.deliveries[index];
                                   return InkWell(
                                     onTap: () {
-                                      locator<NavigationService>()
-                                          .navigateTo(Routes.orderDetailsView);
+                                      locator<NavigationService>().navigateTo(
+                                          Routes.orderDetailsView,
+                                          arguments: OrderDetailsViewArguments(
+                                              delivery: delivery));
                                     },
-                                    child: const OrderContainerWidget(),
+                                    child: OrderContainerWidget(
+                                        delivery: delivery),
                                   );
                                 },
                               ),

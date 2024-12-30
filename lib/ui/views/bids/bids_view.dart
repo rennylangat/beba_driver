@@ -24,6 +24,12 @@ class BidsView extends StackedView<BidsViewModel> {
     BuildContext context,
   ) =>
       BidsViewModel();
+
+  @override
+  void onViewModelReady(BidsViewModel viewModel) {
+    super.onViewModelReady(viewModel);
+    viewModel.init();
+  }
 }
 
 class AvailableTrips extends StatefulWidget {
@@ -58,85 +64,102 @@ class _AvailableTripsState extends State<AvailableTrips>
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 4,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: MyColor.primary40,
-          title: Text(
-            'Available Trips',
-            style: robotoBold.copyWith(
-              fontSize: getProportionateScreenHeight(16),
-              color: MyColor.colorWhite,
-            ),
-          ),
-          bottom: TabBar(
-              controller: tabController,
-              indicatorColor: MyColor.tabIndicatorColor,
-              indicatorSize: TabBarIndicatorSize.tab,
-              tabAlignment: TabAlignment.start,
-              indicatorWeight: 5,
-              indicatorPadding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 1),
-              unselectedLabelColor: MyColor.primary90,
-              labelColor: MyColor.colorWhite,
-              isScrollable: true,
-              tabs: [
-                Tab(
-                  child: TabLabel(
-                    isSelected: currentIndex == 0,
-                    labelTitle: "Accepted",
-                    count: "6",
-                    chipColor: MyColor.greenTextColor,
-                    textColor: MyColor.colorWhite,
+    return ViewModelBuilder.reactive(
+        onViewModelReady: (viewModel) {
+          viewModel.init();
+        },
+        viewModelBuilder: () => BidsViewModel(),
+        builder: (context2, viewmodel, child) {
+          return DefaultTabController(
+            length: 4,
+            child: Scaffold(
+              appBar: AppBar(
+                backgroundColor: MyColor.primary40,
+                centerTitle: true,
+                automaticallyImplyLeading: false,
+                title: Text(
+                  'Available Trips',
+                  style: robotoBold.copyWith(
+                    fontSize: getProportionateScreenHeight(16),
+                    color: MyColor.colorWhite,
                   ),
                 ),
-                Tab(
-                  child: TabLabel(
-                    isSelected: currentIndex == 1,
-                    labelTitle: "Pending",
-                    count: "3",
+                bottom: TabBar(
+                    controller: tabController,
+                    indicatorColor: MyColor.tabIndicatorColor,
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    tabAlignment: TabAlignment.start,
+                    indicatorWeight: 5,
+                    indicatorPadding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 1),
+                    unselectedLabelColor: MyColor.primary90,
+                    labelColor: MyColor.colorWhite,
+                    isScrollable: true,
+                    tabs: [
+                      Tab(
+                        child: TabLabel(
+                          isSelected: currentIndex == 0,
+                          labelTitle: "Accepted",
+                          count: "${viewmodel.acceptedDeliveries.length}",
+                          chipColor: MyColor.greenTextColor,
+                          textColor: MyColor.colorWhite,
+                        ),
+                      ),
+                      Tab(
+                        child: TabLabel(
+                          isSelected: currentIndex == 1,
+                          labelTitle: "Pending",
+                          count: "${viewmodel.pendingDeliveries.length}",
+                        ),
+                      ),
+                      Tab(
+                        child: TabLabel(
+                          isSelected: currentIndex == 2,
+                          labelTitle: "Cancelled",
+                          count: "${viewmodel.cancelledDeliveries.length}",
+                          chipColor: MyColor.cancelColor,
+                          textColor: MyColor.colorWhite,
+                        ),
+                      ),
+                      Tab(
+                        child: TabLabel(
+                          isSelected: currentIndex == 3,
+                          labelTitle: "All",
+                          count: "${viewmodel.myDeliveries?.deliveries.length}",
+                          chipColor: MyColor.secondary90,
+                          textColor: MyColor.neutral150,
+                        ),
+                      ),
+                    ]),
+              ),
+              body: TabBarView(
+                controller: tabController,
+                children: [
+                  BidChildView(
+                    bidType: "Accepted",
+                    delivery: viewmodel.acceptedDeliveries,
+                    isLoading: viewmodel.isBusy,
                   ),
-                ),
-                Tab(
-                  child: TabLabel(
-                    isSelected: currentIndex == 2,
-                    labelTitle: "Cancelled",
-                    count: "2",
-                    chipColor: MyColor.cancelColor,
-                    textColor: MyColor.colorWhite,
+                  BidChildView(
+                    bidType: "Pedning",
+                    delivery: viewmodel.pendingDeliveries,
+                    isLoading: viewmodel.isBusy,
                   ),
-                ),
-                Tab(
-                  child: TabLabel(
-                    isSelected: currentIndex == 3,
-                    labelTitle: "All",
-                    count: "1",
-                    chipColor: MyColor.secondary90,
-                    textColor: MyColor.neutral150,
+                  BidChildView(
+                    bidType: "Cancelled",
+                    delivery: viewmodel.cancelledDeliveries,
+                    isLoading: viewmodel.isBusy,
                   ),
-                ),
-              ]),
-        ),
-        body: TabBarView(
-          controller: tabController,
-          children: const [
-            BidChildView(
-              bidType: "Accepted",
+                  BidChildView(
+                    bidType: "All",
+                    delivery: viewmodel.myDeliveries?.deliveries,
+                    isLoading: viewmodel.isBusy,
+                  ),
+                ],
+              ),
             ),
-            BidChildView(
-              bidType: "Pedning",
-            ),
-            BidChildView(
-              bidType: "Cancelled",
-            ),
-            BidChildView(
-              bidType: "All",
-            ),
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 }
 

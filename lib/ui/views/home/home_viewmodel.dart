@@ -41,6 +41,7 @@ class HomeViewModel extends BaseViewModel {
     notifyListeners();
     final res = await _homeService.getUserDetails(userId: userId);
     if (res.statusCode == 200) {
+      box.write("userDetails", res.data);
       _userDetails = UserDetails.fromJson(res.data);
       await getAvailableTrips();
     }

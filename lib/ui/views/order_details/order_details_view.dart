@@ -1,18 +1,27 @@
+import 'package:beba_driver/app/app.locator.dart';
+import 'package:beba_driver/services/money_converter.dart';
 import 'package:beba_driver/ui/common/app_colors.dart';
 import 'package:beba_driver/ui/common/size_config.dart';
 import 'package:beba_driver/ui/common/text_styles.dart';
 import 'package:beba_driver/ui/common/ui_helpers.dart';
+import 'package:beba_driver/ui/views/home/models/delivery_model.dart';
 import 'package:beba_driver/ui/views/widgets/custom_button.dart';
+import 'package:beba_driver/ui/views/widgets/custom_text_field.dart';
 import 'package:beba_driver/ui/views/widgets/order_container_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 import 'order_details_viewmodel.dart';
 
 class OrderDetailsView extends StackedView<OrderDetailsViewModel> {
-  const OrderDetailsView({Key? key}) : super(key: key);
+  final SingleDelivery delivery;
+  const OrderDetailsView({
+    Key? key,
+    required this.delivery,
+  }) : super(key: key);
 
   @override
   Widget builder(
@@ -35,7 +44,9 @@ class OrderDetailsView extends StackedView<OrderDetailsViewModel> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const OrderContainerWidget(),
+            OrderContainerWidget(
+              delivery: delivery,
+            ),
             SizedBox(
               height: getProportionateScreenHeight(15),
             ),
@@ -172,46 +183,69 @@ class OrderDetailsView extends StackedView<OrderDetailsViewModel> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: MyColor.neutral250,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  child: Icon(
-                    MdiIcons.minus,
-                    color: MyColor.neutral2,
-                    size: 16,
-                  ),
-                ),
-                horizontalSpaceSmall,
-                Text(
-                  "2,900",
-                  style: robotoMedium.copyWith(
-                    fontSize: getProportionateScreenHeight(20),
-                    color: MyColor.secondary,
+                InkWell(
+                  onTap: () {
+                    viewModel.decreaseBid();
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: MyColor.neutral250,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 10),
+                    child: Icon(
+                      MdiIcons.minus,
+                      color: MyColor.neutral2,
+                      size: 16,
+                    ),
                   ),
                 ),
-                horizontalSpaceSmall,
-                Container(
-                  decoration: BoxDecoration(
-                    color: MyColor.neutral250,
-                    borderRadius: BorderRadius.circular(4),
+                horizontalSpaceMedium,
+                Expanded(
+                  child: CustomTextField(
+                    hintText: "0.00",
+                    controller: viewModel.bidAmountController,
+                    textAlign: TextAlign.center,
+                    onChanged: (p0) {
+                      if (p0.isNotEmpty) {
+                        viewModel.setAmount(double.parse(p0));
+                      }
+                    },
                   ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  child: Icon(
-                    MdiIcons.plus,
-                    color: MyColor.neutral2,
-                    size: 16,
+                ),
+                // Text(
+                //   "2,900",
+                //   style: robotoMedium.copyWith(
+                //     fontSize: getProportionateScreenHeight(20),
+                //     color: MyColor.secondary,
+                //   ),
+                // ),
+                horizontalSpaceMedium,
+                InkWell(
+                  onTap: () {
+                    viewModel.increaseBid();
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: MyColor.neutral250,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 10),
+                    child: Icon(
+                      MdiIcons.plus,
+                      color: MyColor.neutral2,
+                      size: 16,
+                    ),
                   ),
                 ),
               ],
             ),
             verticalSpaceLarge,
             CustomButton(
-              title: "Place Bid [Kes 2,900.00]",
+              title:
+                  "Place Bid [ ${MoneyConverter().convertMoney(viewModel.amount)}]",
               onTap: () {
                 //show Confirm Dialog
                 showDialog(
@@ -234,7 +268,9 @@ class OrderDetailsView extends StackedView<OrderDetailsViewModel> {
                       ),
                       actions: [
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            locator<NavigationService>().back();
+                          },
                           child: Text(
                             "Cancel",
                             style: robotoRegular.copyWith(
@@ -272,4 +308,10 @@ class OrderDetailsView extends StackedView<OrderDetailsViewModel> {
     BuildContext context,
   ) =>
       OrderDetailsViewModel();
+
+  @override
+  void onViewModelReady(OrderDetailsViewModel viewModel) {
+    viewModel.init(delivery);
+    super.onViewModelReady(viewModel);
+  }
 }

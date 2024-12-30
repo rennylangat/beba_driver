@@ -11,7 +11,6 @@ class TripsService {
     return await _apiClient.request(
       method: Methods.get,
       url: ApiConstants.trips,
-      seeLogs: true,
     );
   }
 }

@@ -54,7 +54,6 @@ class AuthService {
         "code": otp,
         "user_id": userId,
       },
-      seeLogs: true,
     );
   }
 
