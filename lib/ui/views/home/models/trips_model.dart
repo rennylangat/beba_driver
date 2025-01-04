@@ -1,3 +1,7 @@
+// To parse this JSON data, do
+//
+//     final myTrips = myTripsFromJson(jsonString);
+
 import 'dart:convert';
 
 MyTrips myTripsFromJson(String str) => MyTrips.fromJson(json.decode(str));
@@ -5,108 +9,42 @@ MyTrips myTripsFromJson(String str) => MyTrips.fromJson(json.decode(str));
 String myTripsToJson(MyTrips data) => json.encode(data.toJson());
 
 class MyTrips {
-  final String? next;
-  final String? previous;
-  final List<Trip> trips;
+  final List<Datum> data;
 
   MyTrips({
-    this.next,
-    this.previous,
-    required this.trips,
+    required this.data,
   });
 
   factory MyTrips.fromJson(Map<String, dynamic> json) => MyTrips(
-        next: json["next"],
-        previous: json["previous"],
-        trips: List<Trip>.from(json["data"].map((x) => Trip.fromJson(x))),
+        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "next": next,
-        "previous": previous,
-        "data": List<dynamic>.from(trips.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
       };
 }
 
-class Trip {
+class Datum {
   final String id;
-  final Bid bid;
   final Delivery delivery;
-  final Driver driver;
   final bool cancelled;
-  final String penaltyFee;
 
-  Trip({
+  Datum({
     required this.id,
-    required this.bid,
     required this.delivery,
-    required this.driver,
     required this.cancelled,
-    required this.penaltyFee,
   });
 
-  factory Trip.fromJson(Map<String, dynamic> json) => Trip(
+  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
-        bid: Bid.fromJson(json["bid"]),
         delivery: Delivery.fromJson(json["delivery"]),
-        driver: Driver.fromJson(json["driver"]),
         cancelled: json["cancelled"],
-        penaltyFee: json["penalty_fee"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "bid": bid.toJson(),
         "delivery": delivery.toJson(),
-        "driver": driver.toJson(),
         "cancelled": cancelled,
-        "penalty_fee": penaltyFee,
-      };
-}
-
-class Bid {
-  final String id;
-  final int? deletionMarker;
-  final DateTime? deletedAt;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final String bidAmount;
-  final String driver;
-  final String delivery;
-
-  Bid({
-    required this.id,
-    this.deletionMarker,
-    this.deletedAt,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.bidAmount,
-    required this.driver,
-    required this.delivery,
-  });
-
-  factory Bid.fromJson(Map<String, dynamic> json) => Bid(
-        id: json["id"],
-        deletionMarker: json["deletion_marker"],
-        deletedAt: json["deleted_at"] == null
-            ? null
-            : DateTime.parse(json["deleted_at"]),
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        bidAmount: json["bid_amount"],
-        driver: json["driver"],
-        delivery: json["delivery"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "deletion_marker": deletionMarker,
-        "deleted_at": deletedAt?.toIso8601String(),
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "bid_amount": bidAmount,
-        "driver": driver,
-        "delivery": delivery,
       };
 }
 
@@ -115,54 +53,66 @@ class Delivery {
   final RequiredVehicleType requiredVehicleType;
   final String deliveryStatus;
   final String paymentStatus;
-  final int? deletionMarker;
-  final DateTime? deletedAt;
+  final dynamic bidObject;
+  final dynamic deletionMarker;
+  final dynamic deletedAt;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final String deliveryCode;
+  final dynamic finalDeliveryFee;
+  final String platformFees;
   final String pickupLocation;
   final String deliveryLocation;
-  final DateTime pickupDatetime;
-  final DateTime deliveryDatetime;
   final String cargoDescription;
-  final String paymentAmount;
-  final DateTime bidDeadline;
   final bool isActive;
   final String additionalRequirements;
-  final String? latitude;
-  final String? longitude;
+  final int deliveryPaymentStatus;
+  final bool driverPaidPlatformFees;
+  final String pickupLocationLatitude;
+  final String pickupLocationLongitude;
+  final String deliveryLocationLatitude;
+  final String deliveryLocationLongitude;
   final DateTime lastUpdatedAt;
   final String deliveryNotes;
-  final String deliveryDuration;
-  final String deliveryDistance;
+  final String approximateWeightCapacityTon;
+  final String approximateDeliveryDuration;
+  final String approximateDeliveryDistance;
   final String requestingUser;
-  final String acceptedBid;
+  final dynamic acceptedBid;
+  final List<dynamic> deliveryStatusHistory;
 
   Delivery({
     required this.id,
     required this.requiredVehicleType,
     required this.deliveryStatus,
     required this.paymentStatus,
-    this.deletionMarker,
-    this.deletedAt,
+    required this.bidObject,
+    required this.deletionMarker,
+    required this.deletedAt,
     required this.createdAt,
     required this.updatedAt,
+    required this.deliveryCode,
+    required this.finalDeliveryFee,
+    required this.platformFees,
     required this.pickupLocation,
     required this.deliveryLocation,
-    required this.pickupDatetime,
-    required this.deliveryDatetime,
     required this.cargoDescription,
-    required this.paymentAmount,
-    required this.bidDeadline,
     required this.isActive,
     required this.additionalRequirements,
-    this.latitude,
-    this.longitude,
+    required this.deliveryPaymentStatus,
+    required this.driverPaidPlatformFees,
+    required this.pickupLocationLatitude,
+    required this.pickupLocationLongitude,
+    required this.deliveryLocationLatitude,
+    required this.deliveryLocationLongitude,
     required this.lastUpdatedAt,
     required this.deliveryNotes,
-    required this.deliveryDuration,
-    required this.deliveryDistance,
+    required this.approximateWeightCapacityTon,
+    required this.approximateDeliveryDuration,
+    required this.approximateDeliveryDistance,
     required this.requestingUser,
     required this.acceptedBid,
+    required this.deliveryStatusHistory,
   });
 
   factory Delivery.fromJson(Map<String, dynamic> json) => Delivery(
@@ -171,29 +121,34 @@ class Delivery {
             RequiredVehicleType.fromJson(json["required_vehicle_type"]),
         deliveryStatus: json["delivery_status"],
         paymentStatus: json["payment_status"],
+        bidObject: json["bid_object"],
         deletionMarker: json["deletion_marker"],
-        deletedAt: json["deleted_at"] == null
-            ? null
-            : DateTime.parse(json["deleted_at"]),
+        deletedAt: json["deleted_at"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
+        deliveryCode: json["delivery_code"],
+        finalDeliveryFee: json["final_delivery_fee"],
+        platformFees: json["platform_fees"],
         pickupLocation: json["pickup_location"],
         deliveryLocation: json["delivery_location"],
-        pickupDatetime: DateTime.parse(json["pickup_datetime"]),
-        deliveryDatetime: DateTime.parse(json["delivery_datetime"]),
         cargoDescription: json["cargo_description"],
-        paymentAmount: json["payment_amount"],
-        bidDeadline: DateTime.parse(json["bid_deadline"]),
         isActive: json["is_active"],
         additionalRequirements: json["additional_requirements"],
-        latitude: json["latitude"],
-        longitude: json["longitude"],
+        deliveryPaymentStatus: json["delivery_payment_status"],
+        driverPaidPlatformFees: json["driver_paid_platform_fees"],
+        pickupLocationLatitude: json["pickup_location_latitude"],
+        pickupLocationLongitude: json["pickup_location_longitude"],
+        deliveryLocationLatitude: json["delivery_location_latitude"],
+        deliveryLocationLongitude: json["delivery_location_longitude"],
         lastUpdatedAt: DateTime.parse(json["last_updated_at"]),
         deliveryNotes: json["delivery_notes"],
-        deliveryDuration: json["delivery_duration"],
-        deliveryDistance: json["delivery_distance"],
+        approximateWeightCapacityTon: json["approximate_weight_capacity_ton"],
+        approximateDeliveryDuration: json["approximate_delivery_duration"],
+        approximateDeliveryDistance: json["approximate_delivery_distance"],
         requestingUser: json["requesting_user"],
         acceptedBid: json["accepted_bid"],
+        deliveryStatusHistory:
+            List<dynamic>.from(json["delivery_status_history"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
@@ -201,27 +156,34 @@ class Delivery {
         "required_vehicle_type": requiredVehicleType.toJson(),
         "delivery_status": deliveryStatus,
         "payment_status": paymentStatus,
+        "bid_object": bidObject,
         "deletion_marker": deletionMarker,
-        "deleted_at": deletedAt?.toIso8601String(),
+        "deleted_at": deletedAt,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
+        "delivery_code": deliveryCode,
+        "final_delivery_fee": finalDeliveryFee,
+        "platform_fees": platformFees,
         "pickup_location": pickupLocation,
         "delivery_location": deliveryLocation,
-        "pickup_datetime": pickupDatetime.toIso8601String(),
-        "delivery_datetime": deliveryDatetime.toIso8601String(),
         "cargo_description": cargoDescription,
-        "payment_amount": paymentAmount,
-        "bid_deadline": bidDeadline.toIso8601String(),
         "is_active": isActive,
         "additional_requirements": additionalRequirements,
-        "latitude": latitude,
-        "longitude": longitude,
+        "delivery_payment_status": deliveryPaymentStatus,
+        "driver_paid_platform_fees": driverPaidPlatformFees,
+        "pickup_location_latitude": pickupLocationLatitude,
+        "pickup_location_longitude": pickupLocationLongitude,
+        "delivery_location_latitude": deliveryLocationLatitude,
+        "delivery_location_longitude": deliveryLocationLongitude,
         "last_updated_at": lastUpdatedAt.toIso8601String(),
         "delivery_notes": deliveryNotes,
-        "delivery_duration": deliveryDuration,
-        "delivery_distance": deliveryDistance,
+        "approximate_weight_capacity_ton": approximateWeightCapacityTon,
+        "approximate_delivery_duration": approximateDeliveryDuration,
+        "approximate_delivery_distance": approximateDeliveryDistance,
         "requesting_user": requestingUser,
         "accepted_bid": acceptedBid,
+        "delivery_status_history":
+            List<dynamic>.from(deliveryStatusHistory.map((x) => x)),
       };
 }
 
@@ -230,7 +192,7 @@ class RequiredVehicleType {
   final String name;
   final String minWeightCapacityTon;
   final String maxWeightCapacityTon;
-  final String? platformFees;
+  final String platformFees;
   final String description;
   final String imageUrl;
   final bool isActive;
@@ -240,7 +202,7 @@ class RequiredVehicleType {
     required this.name,
     required this.minWeightCapacityTon,
     required this.maxWeightCapacityTon,
-    this.platformFees,
+    required this.platformFees,
     required this.description,
     required this.imageUrl,
     required this.isActive,
@@ -267,33 +229,5 @@ class RequiredVehicleType {
         "description": description,
         "imageUrl": imageUrl,
         "is_active": isActive,
-      };
-}
-
-class Driver {
-  final String id;
-  final String phoneNumber;
-  final String firstName;
-  final String lastName;
-
-  Driver({
-    required this.id,
-    required this.phoneNumber,
-    required this.firstName,
-    required this.lastName,
-  });
-
-  factory Driver.fromJson(Map<String, dynamic> json) => Driver(
-        id: json["id"],
-        phoneNumber: json["phone_number"],
-        firstName: json["first_name"],
-        lastName: json["last_name"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "phone_number": phoneNumber,
-        "first_name": firstName,
-        "last_name": lastName,
       };
 }

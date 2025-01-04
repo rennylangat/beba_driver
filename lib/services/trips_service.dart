@@ -13,4 +13,16 @@ class TripsService {
       url: ApiConstants.trips,
     );
   }
+
+  Future<Response> placeBid(
+      {required String bidAmount, required String deliveryId}) async {
+    return await _apiClient.request(
+      method: Methods.post,
+      url: "${ApiConstants.placeBid}$deliveryId/bids/",
+      body: {
+        "bid_amount": bidAmount,
+        "delivery": deliveryId,
+      },
+    );
+  }
 }
