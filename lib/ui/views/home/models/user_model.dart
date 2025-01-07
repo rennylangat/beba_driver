@@ -146,11 +146,11 @@ class UserRating {
   final int totalTrips;
   final int completedTrips;
   final int canceledTrips;
-  final int completionRate;
+  final double completionRate;
   final Map<String, int> ratingDistribution;
   final NewUserStatus newUserStatus;
   final String userType;
-  final int rawRating;
+  final double rawRating;
 
   UserRating({
     required this.overallRating,
@@ -169,12 +169,12 @@ class UserRating {
         totalTrips: json["total_trips"],
         completedTrips: json["completed_trips"],
         canceledTrips: json["canceled_trips"],
-        completionRate: json["completion_rate"],
+        completionRate: double.parse(json["completion_rate"].toString()),
         ratingDistribution: Map.from(json["rating_distribution"])
             .map((k, v) => MapEntry<String, int>(k, v)),
         newUserStatus: NewUserStatus.fromJson(json["new_user_status"]),
         userType: json["user_type"],
-        rawRating: json["raw_rating"],
+        rawRating: double.parse(json["raw_rating"].toString()),
       );
 
   Map<String, dynamic> toJson() => {

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:beba_driver/app/app.locator.dart';
 import 'package:beba_driver/app/app.router.dart';
 import 'package:beba_driver/ui/common/app_colors.dart';
@@ -126,36 +128,44 @@ class HomeView extends StackedView<HomeViewModel> {
           padding: const EdgeInsets.all(16.0),
           child: RefreshIndicator(
             onRefresh: () async {
+              log("Refreshing page");
               await viewModel.initialise();
             },
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Requests",
-                    style: robotoMedium.copyWith(
-                      fontSize: getProportionateScreenHeight(18),
+            child: SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: SizeConfig.screenHeight * 0.85,
+                  maxHeight: SizeConfig.screenHeight * 0.85,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Requests",
+                      style: robotoMedium.copyWith(
+                        fontSize: getProportionateScreenHeight(18),
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: getProportionateScreenHeight(10),
-                  ),
-                  Expanded(
-                    child: viewModel.isBusy
-                        ? ListView(
-                            children: List.generate(
-                              10,
-                              (index) => Shimmer.fromColors(
-                                baseColor: MyColor.shimmerBaseColor,
-                                highlightColor: MyColor.shimmerSplashColor,
-                                child: Container(
-                                  margin: const EdgeInsets.only(bottom: 16),
-                                  width: SizeConfig.screenWidth,
-                                  height: getProportionateScreenHeight(85),
-                                  decoration: BoxDecoration(
-                                    color: MyColor.colorWhite,
-                                    borderRadius: BorderRadius.circular(10),
+                    SizedBox(
+                      height: getProportionateScreenHeight(10),
+                    ),
+                    viewModel.isBusy
+                        ? Expanded(
+                            child: ListView(
+                              children: List.generate(
+                                10,
+                                (index) => Shimmer.fromColors(
+                                  baseColor: MyColor.shimmerBaseColor,
+                                  highlightColor: MyColor.shimmerSplashColor,
+                                  child: Container(
+                                    margin: const EdgeInsets.only(bottom: 16),
+                                    width: SizeConfig.screenWidth,
+                                    height: getProportionateScreenHeight(85),
+                                    decoration: BoxDecoration(
+                                      color: MyColor.colorWhite,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -209,26 +219,29 @@ class HomeView extends StackedView<HomeViewModel> {
                                   ),
                                 ),
                               )
-                            : ListView.builder(
-                                itemCount:
-                                    viewModel.myDeliveries!.deliveries.length,
-                                itemBuilder: (context, index) {
-                                  var delivery =
-                                      viewModel.myDeliveries!.deliveries[index];
-                                  return InkWell(
-                                    onTap: () {
-                                      locator<NavigationService>().navigateTo(
-                                          Routes.orderDetailsView,
-                                          arguments: OrderDetailsViewArguments(
-                                              delivery: delivery));
-                                    },
-                                    child: OrderContainerWidget(
-                                        delivery: delivery),
-                                  );
-                                },
+                            : Expanded(
+                                child: ListView.builder(
+                                  itemCount:
+                                      viewModel.myDeliveries!.deliveries.length,
+                                  itemBuilder: (context, index) {
+                                    var delivery = viewModel
+                                        .myDeliveries!.deliveries[index];
+                                    return InkWell(
+                                      onTap: () {
+                                        locator<NavigationService>().navigateTo(
+                                            Routes.orderDetailsView,
+                                            arguments:
+                                                OrderDetailsViewArguments(
+                                                    delivery: delivery));
+                                      },
+                                      child: OrderContainerWidget(
+                                          delivery: delivery),
+                                    );
+                                  },
+                                ),
                               ),
-                  )
-                ],
+                  ],
+                ),
               ),
             ),
           ),
