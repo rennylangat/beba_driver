@@ -99,35 +99,43 @@ class _AvailableTripsState extends State<AvailableTrips>
                       Tab(
                         child: TabLabel(
                           isSelected: currentIndex == 0,
+                          labelTitle: "All",
+                          count: viewmodel.isBusy
+                              ? "0"
+                              : "${viewmodel.myDeliveries?.deliveries.length}",
+                          chipColor: MyColor.secondary90,
+                          textColor: MyColor.neutral150,
+                        ),
+                      ),
+                      Tab(
+                        child: TabLabel(
+                          isSelected: currentIndex == 1,
                           labelTitle: "Accepted",
-                          count: "${viewmodel.acceptedDeliveries.length}",
+                          count: viewmodel.isBusy
+                              ? "0"
+                              : "${viewmodel.acceptedDeliveries.length}",
                           chipColor: MyColor.greenTextColor,
                           textColor: MyColor.colorWhite,
                         ),
                       ),
                       Tab(
                         child: TabLabel(
-                          isSelected: currentIndex == 1,
-                          labelTitle: "Pending",
-                          count: "${viewmodel.pendingDeliveries.length}",
-                        ),
-                      ),
-                      Tab(
-                        child: TabLabel(
                           isSelected: currentIndex == 2,
-                          labelTitle: "Cancelled",
-                          count: "${viewmodel.cancelledDeliveries.length}",
-                          chipColor: MyColor.cancelColor,
-                          textColor: MyColor.colorWhite,
+                          labelTitle: "Pending",
+                          count: viewmodel.isBusy
+                              ? "0"
+                              : "${viewmodel.pendingDeliveries.length}",
                         ),
                       ),
                       Tab(
                         child: TabLabel(
                           isSelected: currentIndex == 3,
-                          labelTitle: "All",
-                          count: "${viewmodel.myDeliveries?.deliveries.length}",
-                          chipColor: MyColor.secondary90,
-                          textColor: MyColor.neutral150,
+                          labelTitle: "Cancelled",
+                          count: viewmodel.isBusy
+                              ? "0"
+                              : "${viewmodel.cancelledDeliveries.length}",
+                          chipColor: MyColor.cancelColor,
+                          textColor: MyColor.colorWhite,
                         ),
                       ),
                     ]),
@@ -135,6 +143,11 @@ class _AvailableTripsState extends State<AvailableTrips>
               body: TabBarView(
                 controller: tabController,
                 children: [
+                  BidChildView(
+                    bidType: "All",
+                    delivery: viewmodel.myDeliveries?.deliveries,
+                    isLoading: viewmodel.isBusy,
+                  ),
                   BidChildView(
                     bidType: "Accepted",
                     delivery: viewmodel.acceptedDeliveries,
@@ -148,11 +161,6 @@ class _AvailableTripsState extends State<AvailableTrips>
                   BidChildView(
                     bidType: "Cancelled",
                     delivery: viewmodel.cancelledDeliveries,
-                    isLoading: viewmodel.isBusy,
-                  ),
-                  BidChildView(
-                    bidType: "All",
-                    delivery: viewmodel.myDeliveries?.deliveries,
                     isLoading: viewmodel.isBusy,
                   ),
                 ],
@@ -205,7 +213,7 @@ class TabLabel extends StatelessWidget {
             ),
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             child: Text(
-              count ?? "0",
+              count == null ? "0" : "$count",
               style: robotoMedium.copyWith(
                 fontSize: getProportionateScreenHeight(9),
                 color: textColor,

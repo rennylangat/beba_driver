@@ -1,3 +1,5 @@
+import 'package:beba_driver/app/app.locator.dart';
+import 'package:beba_driver/app/app.router.dart';
 import 'package:beba_driver/ui/common/app_colors.dart';
 import 'package:beba_driver/ui/common/size_config.dart';
 import 'package:beba_driver/ui/common/text_styles.dart';
@@ -6,6 +8,7 @@ import 'package:beba_driver/ui/views/widgets/order_container_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class BidChildView extends StatelessWidget {
   final String bidType;
@@ -92,9 +95,20 @@ class BidChildView extends StatelessWidget {
                         child: ListView.builder(
                           itemCount: delivery!.length,
                           itemBuilder: (context, index) {
-                            return OrderContainerWidget(
-                              isMatched: false,
-                              delivery: delivery![index],
+                            var singleDelivery = delivery![index];
+                            return InkWell(
+                              onTap: () {
+                                locator<NavigationService>().navigateTo(
+                                  Routes.orderDetailsView,
+                                  arguments: OrderDetailsViewArguments(
+                                    delivery: singleDelivery,
+                                  ),
+                                );
+                              },
+                              child: OrderContainerWidget(
+                                isMatched: false,
+                                delivery: delivery![index],
+                              ),
                             );
                           },
                         ),
