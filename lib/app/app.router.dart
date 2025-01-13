@@ -10,6 +10,7 @@ import 'package:beba_driver/ui/views/bids/bids_view.dart' as _i7;
 import 'package:beba_driver/ui/views/bottom_nav/bottom_nav_view.dart' as _i9;
 import 'package:beba_driver/ui/views/home/home_view.dart' as _i2;
 import 'package:beba_driver/ui/views/home/models/delivery_model.dart' as _i13;
+import 'package:beba_driver/ui/views/home/models/trips_model.dart' as _i14;
 import 'package:beba_driver/ui/views/intro/intro_view.dart' as _i4;
 import 'package:beba_driver/ui/views/login/login_view.dart' as _i5;
 import 'package:beba_driver/ui/views/order_details/order_details_view.dart'
@@ -20,7 +21,7 @@ import 'package:beba_driver/ui/views/startup/startup_view.dart' as _i3;
 import 'package:flutter/material.dart' as _i12;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i14;
+import 'package:stacked_services/stacked_services.dart' as _i15;
 
 class Routes {
   static const homeView = '/home-view';
@@ -129,8 +130,8 @@ class StackedRouter extends _i1.RouterBase {
     _i6.OrderDetailsView: (data) {
       final args = data.getArgs<OrderDetailsViewArguments>(nullOk: false);
       return _i12.MaterialPageRoute<dynamic>(
-        builder: (context) =>
-            _i6.OrderDetailsView(key: args.key, delivery: args.delivery),
+        builder: (context) => _i6.OrderDetailsView(
+            key: args.key, delivery: args.delivery, trip: args.trip),
         settings: data,
       );
     },
@@ -179,26 +180,29 @@ class OrderDetailsViewArguments {
   const OrderDetailsViewArguments({
     this.key,
     required this.delivery,
+    this.trip,
   });
 
   final _i12.Key? key;
 
   final _i13.SingleDelivery delivery;
 
+  final _i14.Trip? trip;
+
   @override
   String toString() {
-    return '{"key": "$key", "delivery": "$delivery"}';
+    return '{"key": "$key", "delivery": "$delivery", "trip": "$trip"}';
   }
 
   @override
   bool operator ==(covariant OrderDetailsViewArguments other) {
     if (identical(this, other)) return true;
-    return other.key == key && other.delivery == delivery;
+    return other.key == key && other.delivery == delivery && other.trip == trip;
   }
 
   @override
   int get hashCode {
-    return key.hashCode ^ delivery.hashCode;
+    return key.hashCode ^ delivery.hashCode ^ trip.hashCode;
   }
 }
 
@@ -234,7 +238,7 @@ class OtpViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i14.NavigationService {
+extension NavigatorStateExtension on _i15.NavigationService {
   Future<dynamic> navigateToHomeView([
     int? routerId,
     bool preventDuplicates = true,
@@ -294,6 +298,7 @@ extension NavigatorStateExtension on _i14.NavigationService {
   Future<dynamic> navigateToOrderDetailsView({
     _i12.Key? key,
     required _i13.SingleDelivery delivery,
+    _i14.Trip? trip,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -301,7 +306,8 @@ extension NavigatorStateExtension on _i14.NavigationService {
         transition,
   }) async {
     return navigateTo<dynamic>(Routes.orderDetailsView,
-        arguments: OrderDetailsViewArguments(key: key, delivery: delivery),
+        arguments:
+            OrderDetailsViewArguments(key: key, delivery: delivery, trip: trip),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -442,6 +448,7 @@ extension NavigatorStateExtension on _i14.NavigationService {
   Future<dynamic> replaceWithOrderDetailsView({
     _i12.Key? key,
     required _i13.SingleDelivery delivery,
+    _i14.Trip? trip,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -449,7 +456,8 @@ extension NavigatorStateExtension on _i14.NavigationService {
         transition,
   }) async {
     return replaceWith<dynamic>(Routes.orderDetailsView,
-        arguments: OrderDetailsViewArguments(key: key, delivery: delivery),
+        arguments:
+            OrderDetailsViewArguments(key: key, delivery: delivery, trip: trip),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

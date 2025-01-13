@@ -7,7 +7,14 @@ import 'package:dio/dio.dart';
 class TripsService {
   final _apiClient = locator<ApiClientService>();
 
-  Future<Response> getAvailableTrips() async {
+  Future<Response> getAvailableDeliveries() async {
+    return await _apiClient.request(
+      method: Methods.get,
+      url: ApiConstants.deliveries,
+    );
+  }
+
+  Future<Response> getMyTrips() async {
     return await _apiClient.request(
       method: Methods.get,
       url: ApiConstants.trips,
@@ -22,6 +29,20 @@ class TripsService {
       body: {
         "bid_amount": bidAmount,
         "delivery": deliveryId,
+      },
+    );
+  }
+
+  Future<Response> startTrip(
+      {required String tripId,
+      required String status,
+      required String deliveryCode}) async {
+    return await _apiClient.request(
+      method: Methods.patch,
+      url: "${ApiConstants.trips}$tripId/",
+      seeLogs: true,
+      body: {
+        "delivery_status": status,
       },
     );
   }

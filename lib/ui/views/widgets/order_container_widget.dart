@@ -139,6 +139,7 @@ class OrderContainerWidget extends StatelessWidget {
               ),
               horizontalSpaceSmall,
               Expanded(
+                flex: 2,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -194,24 +195,25 @@ class OrderContainerWidget extends StatelessWidget {
               ),
               horizontalSpaceTiny,
               Expanded(
+                  flex: 2,
                   child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Destination",
-                    style: robotoRegular.copyWith(
-                      color: MyColor.neutral150,
-                      fontSize: getProportionateScreenHeight(9),
-                    ),
-                  ),
-                  Text(
-                    "${delivery?.deliveryLocation}",
-                    style: robotoMedium.copyWith(
-                        color: MyColor.primary40,
-                        fontSize: getProportionateScreenHeight(11)),
-                  ),
-                ],
-              ))
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Destination",
+                        style: robotoRegular.copyWith(
+                          color: MyColor.neutral150,
+                          fontSize: getProportionateScreenHeight(9),
+                        ),
+                      ),
+                      Text(
+                        "${delivery?.deliveryLocation}",
+                        style: robotoMedium.copyWith(
+                            color: MyColor.primary40,
+                            fontSize: getProportionateScreenHeight(11)),
+                      ),
+                    ],
+                  ))
             ],
           )
         ],

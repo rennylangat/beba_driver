@@ -52,6 +52,14 @@ class ApiClientService {
             token: token,
           ),
         );
+      } else if (method == Methods.patch) {
+        res = await dio.patch(
+          url,
+          data: body!,
+          options: ReqOptions(
+            token: token,
+          ),
+        );
       } else if (method == Methods.delete) {
         res = await dio.delete(
           url,

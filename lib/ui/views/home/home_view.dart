@@ -134,8 +134,8 @@ class HomeView extends StackedView<HomeViewModel> {
             child: SingleChildScrollView(
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                  minHeight: SizeConfig.screenHeight * 0.85,
-                  maxHeight: SizeConfig.screenHeight * 0.85,
+                  minHeight: SizeConfig.screenHeight * 0.9,
+                  maxHeight: SizeConfig.screenHeight * 0.9,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,7 +171,7 @@ class HomeView extends StackedView<HomeViewModel> {
                               ),
                             ),
                           )
-                        : viewModel.myDeliveries!.deliveries.isEmpty
+                        : viewModel.myTrips!.trips.isEmpty
                             ? Center(
                                 child: InkWell(
                                   onTap: () {},
@@ -221,21 +221,23 @@ class HomeView extends StackedView<HomeViewModel> {
                               )
                             : Expanded(
                                 child: ListView.builder(
-                                  itemCount:
-                                      viewModel.myDeliveries!.deliveries.length,
+                                  itemCount: viewModel.myTrips!.trips.length,
+                                  padding: const EdgeInsets.only(bottom: 200),
+                                  shrinkWrap: true,
+                                  key: const PageStorageKey("deliveries"),
                                   itemBuilder: (context, index) {
-                                    var delivery = viewModel
-                                        .myDeliveries!.deliveries[index];
+                                    var trip = viewModel.myTrips!.trips[index];
                                     return InkWell(
                                       onTap: () {
                                         locator<NavigationService>().navigateTo(
-                                            Routes.orderDetailsView,
-                                            arguments:
-                                                OrderDetailsViewArguments(
-                                                    delivery: delivery));
+                                          Routes.orderDetailsView,
+                                          arguments: OrderDetailsViewArguments(
+                                              delivery: trip.delivery,
+                                              trip: trip),
+                                        );
                                       },
                                       child: OrderContainerWidget(
-                                          delivery: delivery),
+                                          delivery: trip.delivery),
                                     );
                                   },
                                 ),

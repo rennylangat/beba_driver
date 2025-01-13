@@ -2,6 +2,7 @@ import 'package:beba_driver/app/app.locator.dart';
 import 'package:beba_driver/services/trips_service.dart';
 import 'package:beba_driver/ui/views/bottom_nav/bottom_nav_view.dart';
 import 'package:beba_driver/ui/views/home/models/delivery_model.dart';
+import 'package:beba_driver/ui/views/home/models/trips_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:stacked/stacked.dart';
@@ -10,6 +11,8 @@ import 'package:stacked_services/stacked_services.dart';
 class OrderDetailsViewModel extends BaseViewModel {
   SingleDelivery? _singleDelivery;
   SingleDelivery? get singleDelivery => _singleDelivery;
+  Trip? _trip;
+  Trip? get trip => _trip;
   TextEditingController bidAmountController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   double _amount = 0.0;
@@ -17,8 +20,9 @@ class OrderDetailsViewModel extends BaseViewModel {
   final _tripService = locator<TripsService>();
   final _navigator = locator<NavigationService>();
 
-  void init(SingleDelivery singleDelivery) {
+  void init({SingleDelivery? singleDelivery, Trip? trip}) {
     _singleDelivery = singleDelivery;
+    _trip = trip;
     notifyListeners();
   }
 
@@ -57,5 +61,21 @@ class OrderDetailsViewModel extends BaseViewModel {
       }
       EasyLoading.dismiss();
     }
+  }
+
+  startTrip() async {
+    EasyLoading.show(status: 'Starting Trip...');
+    final res = await _tripService.startTrip(
+      tripId: trip!.id,
+      status: "Started",
+      deliveryCode: singleDelivery!.deliveryCode,
+    );
+    if (res.statusCode == 200) {
+      EasyLoading.showSuccess('Trip Started Successfully');
+      _navigator.clearStackAndShowView(
+        const BottomNavView(),
+      );
+    }
+    EasyLoading.dismiss();
   }
 }

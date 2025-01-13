@@ -42,6 +42,7 @@ class SingleDelivery {
   final dynamic acceptedBid;
   final RequiredVehicleType requiredVehicleType;
   final RequestingUser requestingUser;
+  final BidObject? bidObject;
   final dynamic deletionMarker;
   final dynamic deletedAt;
   final DateTime createdAt;
@@ -67,6 +68,7 @@ class SingleDelivery {
       required this.acceptedBid,
       required this.requiredVehicleType,
       required this.requestingUser,
+      this.bidObject,
       required this.deletionMarker,
       required this.deletedAt,
       required this.createdAt,
@@ -93,6 +95,9 @@ class SingleDelivery {
         requiredVehicleType:
             RequiredVehicleType.fromJson(json["required_vehicle_type"]),
         requestingUser: RequestingUser.fromJson(json["requesting_user"]),
+        bidObject: json["bid_object"] != null
+            ? BidObject.fromJson(json["bid_object"])
+            : null,
         deletionMarker: json["deletion_marker"],
         deletedAt: json["deleted_at"],
         createdAt: DateTime.parse(json["created_at"]),
@@ -120,6 +125,7 @@ class SingleDelivery {
         "accepted_bid": acceptedBid,
         "required_vehicle_type": requiredVehicleType.toJson(),
         "requesting_user": requestingUser.toJson(),
+        "bid_object": bidObject?.toJson(),
         "deletion_marker": deletionMarker,
         "deleted_at": deletedAt,
         "created_at": createdAt.toIso8601String(),
@@ -166,6 +172,38 @@ class RequestingUser {
         "phone_number": phoneNumber,
         "first_name": firstName,
         "last_name": lastName,
+      };
+}
+
+class BidObject {
+  final int id;
+  final double bidAmount;
+  final int bidStatus;
+  final DateTime acceptedAt;
+  final RequestingUser driver;
+
+  BidObject({
+    required this.id,
+    required this.bidAmount,
+    required this.bidStatus,
+    required this.acceptedAt,
+    required this.driver,
+  });
+
+  factory BidObject.fromJson(Map<String, dynamic> json) => BidObject(
+        id: json["id"],
+        bidAmount: json["bid_amount"],
+        bidStatus: json["bid_status"],
+        acceptedAt: DateTime.parse(json["accepted_at"]),
+        driver: RequestingUser.fromJson(json["driver"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "bid_amount": bidAmount,
+        "bid_status": bidStatus,
+        "accepted_at": acceptedAt.toIso8601String(),
+        "driver": driver.toJson(),
       };
 }
 

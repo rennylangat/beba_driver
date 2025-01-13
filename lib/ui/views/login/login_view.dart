@@ -20,6 +20,12 @@ class LoginView extends StackedView<LoginViewModel> {
   ) {
     return Scaffold(
       backgroundColor: MyColor.colorWhite,
+      appBar: AppBar(
+        toolbarHeight: 0,
+        backgroundColor: MyColor.colorWhite,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

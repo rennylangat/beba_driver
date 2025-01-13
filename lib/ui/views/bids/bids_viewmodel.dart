@@ -27,7 +27,7 @@ class BidsViewModel extends IndexTrackingViewModel {
     log("setMyDeliveries");
     _isBusy = true;
     notifyListeners();
-    final res = await _tripService.getAvailableTrips();
+    final res = await _tripService.getAvailableDeliveries();
     if (res.statusCode == 200) {
       _myDeliveries = MyDeliveries.fromJson(res.data);
       notifyListeners();

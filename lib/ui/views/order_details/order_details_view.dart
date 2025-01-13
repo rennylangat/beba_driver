@@ -5,6 +5,7 @@ import 'package:beba_driver/ui/common/size_config.dart';
 import 'package:beba_driver/ui/common/text_styles.dart';
 import 'package:beba_driver/ui/common/ui_helpers.dart';
 import 'package:beba_driver/ui/views/home/models/delivery_model.dart';
+import 'package:beba_driver/ui/views/home/models/trips_model.dart';
 import 'package:beba_driver/ui/views/widgets/custom_button.dart';
 import 'package:beba_driver/ui/views/widgets/custom_text_field.dart';
 import 'package:beba_driver/ui/views/widgets/order_container_widget.dart';
@@ -19,9 +20,11 @@ import 'order_details_viewmodel.dart';
 
 class OrderDetailsView extends StackedView<OrderDetailsViewModel> {
   final SingleDelivery delivery;
+  final Trip? trip;
   const OrderDetailsView({
     Key? key,
     required this.delivery,
+    this.trip,
   }) : super(key: key);
 
   @override
@@ -209,146 +212,195 @@ class OrderDetailsView extends StackedView<OrderDetailsViewModel> {
                 ],
               ),
               verticalSpaceMedium,
+              if (viewModel.singleDelivery!.deliveryStatus.toLowerCase() ==
+                  "accepted")
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Amount Payable",
+                      style: robotoRegular.copyWith(
+                        fontSize: getProportionateScreenHeight(12),
+                        color: MyColor.primary40,
+                      ),
+                    ),
+                    Wrap(
+                      children: [
+                        Text.rich(TextSpan(children: [
+                          TextSpan(
+                            text: "Ksh",
+                            style: robotoMedium.copyWith(
+                              fontSize: getProportionateScreenHeight(9),
+                              color: MyColor.neutral150,
+                            ),
+                          ),
+                          TextSpan(
+                            text:
+                                " ${MoneyConverter().convertMoney(viewModel.singleDelivery!.bidObject!.bidAmount, currency: "").replaceAll(" ", "")}",
+                            style: robotoMedium.copyWith(
+                              fontSize: getProportionateScreenHeight(16),
+                              color: MyColor.secondary,
+                            ),
+                          ),
+                        ]))
+                      ],
+                    )
+                  ],
+                ),
               const Divider(
                 color: MyColor.utilityOutline,
                 thickness: 1,
               ),
-              Center(
-                child: Text(
-                  "Your Bid Price",
-                  style: robotoRegular.copyWith(
-                    fontSize: getProportionateScreenHeight(9),
-                    color: MyColor.neutral150,
-                  ),
+              if (viewModel.singleDelivery!.deliveryStatus.toLowerCase() !=
+                  "accepted")
+                Column(
+                  children: [
+                    Center(
+                      child: Text(
+                        "Your Bid Price",
+                        style: robotoRegular.copyWith(
+                          fontSize: getProportionateScreenHeight(9),
+                          color: MyColor.neutral150,
+                        ),
+                      ),
+                    ),
+                    verticalSpaceMedium,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            viewModel.decreaseBid();
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: MyColor.neutral250,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 10),
+                            child: Icon(
+                              MdiIcons.minus,
+                              color: MyColor.neutral2,
+                              size: 16,
+                            ),
+                          ),
+                        ),
+                        horizontalSpaceMedium,
+                        Expanded(
+                          child: CustomTextField(
+                            hintText: "0.00",
+                            controller: viewModel.bidAmountController,
+                            textAlign: TextAlign.center,
+                            onChanged: (p0) {
+                              if (p0.isNotEmpty) {
+                                viewModel.setAmount(double.parse(p0));
+                              }
+                            },
+                            validator: (p0) {
+                              if (p0!.isEmpty) {
+                                return "Please enter a bid amount";
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        // Text(
+                        //   "2,900",
+                        //   style: robotoMedium.copyWith(
+                        //     fontSize: getProportionateScreenHeight(20),
+                        //     color: MyColor.secondary,
+                        //   ),
+                        // ),
+                        horizontalSpaceMedium,
+                        InkWell(
+                          onTap: () {
+                            viewModel.increaseBid();
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: MyColor.neutral250,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 10),
+                            child: Icon(
+                              MdiIcons.plus,
+                              color: MyColor.neutral2,
+                              size: 16,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ),
-              verticalSpaceMedium,
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      viewModel.decreaseBid();
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: MyColor.neutral250,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 10),
-                      child: Icon(
-                        MdiIcons.minus,
-                        color: MyColor.neutral2,
-                        size: 16,
-                      ),
-                    ),
-                  ),
-                  horizontalSpaceMedium,
-                  Expanded(
-                    child: CustomTextField(
-                      hintText: "0.00",
-                      controller: viewModel.bidAmountController,
-                      textAlign: TextAlign.center,
-                      onChanged: (p0) {
-                        if (p0.isNotEmpty) {
-                          viewModel.setAmount(double.parse(p0));
-                        }
-                      },
-                      validator: (p0) {
-                        if (p0!.isEmpty) {
-                          return "Please enter a bid amount";
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  // Text(
-                  //   "2,900",
-                  //   style: robotoMedium.copyWith(
-                  //     fontSize: getProportionateScreenHeight(20),
-                  //     color: MyColor.secondary,
-                  //   ),
-                  // ),
-                  horizontalSpaceMedium,
-                  InkWell(
-                    onTap: () {
-                      viewModel.increaseBid();
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: MyColor.neutral250,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 10),
-                      child: Icon(
-                        MdiIcons.plus,
-                        color: MyColor.neutral2,
-                        size: 16,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
               verticalSpaceLarge,
               CustomButton(
-                title:
-                    "Place Bid [ ${MoneyConverter().convertMoney(viewModel.amount)}]",
+                title: viewModel.singleDelivery!.deliveryStatus.toLowerCase() ==
+                        "accepted"
+                    ? "Start Trip"
+                    : "Place Bid [ ${MoneyConverter().convertMoney(viewModel.amount)}]",
                 onTap: () {
                   //show Confirm Dialog
-                  if (viewModel.amount == 0.0) {
-                    EasyLoading.showError("Please enter a bid amount");
-                    return;
+
+                  if (viewModel.singleDelivery!.deliveryStatus.toLowerCase() ==
+                      "accepted") {
+                    viewModel.startTrip();
+                  } else {
+                    if (viewModel.amount == 0.0) {
+                      EasyLoading.showError("Please enter a bid amount");
+                      return;
+                    }
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog.adaptive(
+                          title: Text(
+                            "Confirm Bid",
+                            style: robotoBold.copyWith(
+                              fontSize: getProportionateScreenHeight(18),
+                              color: MyColor.primary40,
+                            ),
+                          ),
+                          content: Text(
+                            "Are you sure you want to place a bid of ${MoneyConverter().convertMoney(viewModel.amount)}?",
+                            style: robotoRegular.copyWith(
+                              fontSize: getProportionateScreenHeight(14),
+                              color: MyColor.neutral150,
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                locator<NavigationService>().back();
+                              },
+                              child: Text(
+                                "Cancel",
+                                style: robotoRegular.copyWith(
+                                  fontSize: getProportionateScreenHeight(14),
+                                  color: MyColor.primary40,
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                await viewModel.placeBid();
+                              },
+                              child: Text(
+                                "Confirm",
+                                style: robotoBold.copyWith(
+                                  fontSize: getProportionateScreenHeight(14),
+                                  color: MyColor.primary40,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   }
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog.adaptive(
-                        title: Text(
-                          "Confirm Bid",
-                          style: robotoBold.copyWith(
-                            fontSize: getProportionateScreenHeight(18),
-                            color: MyColor.primary40,
-                          ),
-                        ),
-                        content: Text(
-                          "Are you sure you want to place a bid of ${MoneyConverter().convertMoney(viewModel.amount)}?",
-                          style: robotoRegular.copyWith(
-                            fontSize: getProportionateScreenHeight(14),
-                            color: MyColor.neutral150,
-                          ),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              locator<NavigationService>().back();
-                            },
-                            child: Text(
-                              "Cancel",
-                              style: robotoRegular.copyWith(
-                                fontSize: getProportionateScreenHeight(14),
-                                color: MyColor.primary40,
-                              ),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () async {
-                              await viewModel.placeBid();
-                            },
-                            child: Text(
-                              "Confirm",
-                              style: robotoBold.copyWith(
-                                fontSize: getProportionateScreenHeight(14),
-                                color: MyColor.primary40,
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  );
                 },
               )
             ],
@@ -366,7 +418,7 @@ class OrderDetailsView extends StackedView<OrderDetailsViewModel> {
 
   @override
   void onViewModelReady(OrderDetailsViewModel viewModel) {
-    viewModel.init(delivery);
+    viewModel.init(singleDelivery: delivery, trip: trip);
     super.onViewModelReady(viewModel);
   }
 }

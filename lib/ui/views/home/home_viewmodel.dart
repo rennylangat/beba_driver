@@ -1,7 +1,7 @@
 import 'package:beba_driver/app/app.locator.dart';
 import 'package:beba_driver/services/home_service.dart';
 import 'package:beba_driver/services/trips_service.dart';
-import 'package:beba_driver/ui/views/home/models/delivery_model.dart';
+import 'package:beba_driver/ui/views/home/models/trips_model.dart';
 import 'package:beba_driver/ui/views/home/models/user_model.dart';
 import 'package:get_secure_storage/get_secure_storage.dart';
 import 'package:stacked/stacked.dart';
@@ -15,8 +15,8 @@ class HomeViewModel extends BaseViewModel {
   bool get isBusy => _isBusy;
   UserDetails? _userDetails;
   UserDetails? get userDetails => _userDetails;
-  MyDeliveries? _myDeliveries;
-  MyDeliveries? get myDeliveries => _myDeliveries;
+  MyTrips? _myTrips;
+  MyTrips? get myTrips => _myTrips;
   final box = GetSecureStorage();
   String userId = "";
   Future<void> initialise() async {
@@ -28,9 +28,9 @@ class HomeViewModel extends BaseViewModel {
   }
 
   getAvailableTrips() async {
-    final res = await _tripService.getAvailableTrips();
+    final res = await _tripService.getMyTrips();
     if (res.statusCode == 200) {
-      _myDeliveries = MyDeliveries.fromJson(res.data);
+      _myTrips = MyTrips.fromJson(res.data);
     }
     _isBusy = false;
     notifyListeners();

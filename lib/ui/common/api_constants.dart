@@ -15,7 +15,8 @@ class ApiConstants {
   static String userDetails = "${baseURL}users/";
 
   //TRIPS
-  static String trips = "${baseURL}trips/delivery";
+  static String deliveries = "${baseURL}trips/delivery";
+  static String trips = "${baseURL}trips/";
 
   //BIDS
   static String placeBid = "${baseURL}trips/bid/deliveries/";
