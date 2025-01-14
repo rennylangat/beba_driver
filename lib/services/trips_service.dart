@@ -33,16 +33,22 @@ class TripsService {
     );
   }
 
-  Future<Response> startTrip(
-      {required String tripId,
-      required String status,
-      required String deliveryCode}) async {
+  Future<Response> startTrip({
+    required String tripId,
+    required int status,
+    required String deliveryCode,
+    required String longitude,
+    required String latitude,
+  }) async {
     return await _apiClient.request(
-      method: Methods.patch,
-      url: "${ApiConstants.trips}$tripId/",
+      method: Methods.put,
+      url: "${ApiConstants.startTrip}$tripId/",
       seeLogs: true,
       body: {
+        "delivery_id": tripId,
         "delivery_status": status,
+        "latitude": latitude,
+        "longitude": longitude,
       },
     );
   }

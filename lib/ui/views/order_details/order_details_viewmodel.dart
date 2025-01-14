@@ -66,9 +66,11 @@ class OrderDetailsViewModel extends BaseViewModel {
   startTrip() async {
     EasyLoading.show(status: 'Starting Trip...');
     final res = await _tripService.startTrip(
-      tripId: trip!.id,
-      status: "Started",
+      tripId: trip!.delivery.id,
+      status: 7,
       deliveryCode: singleDelivery!.deliveryCode,
+      longitude: singleDelivery!.longitude,
+      latitude: singleDelivery!.latitude,
     );
     if (res.statusCode == 200) {
       EasyLoading.showSuccess('Trip Started Successfully');
